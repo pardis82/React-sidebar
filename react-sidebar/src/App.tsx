@@ -1,17 +1,11 @@
-import Sidebar from "../src/components/Others/sidebar"
-import "./App.css"
-const menuitems = [
-  { id: 1 , lable: "setting" },
-  { id: 2 , lable: "Customers" },
-  { id: 3 , lable: "Dash" },
-];
+import Sidebar from "./components/Others/sidebar";
+import "./App.css";
 function App() {
-
   return (
     <div className="App">
-      <Sidebar menuItems={menuitems} />
+      <Sidebar  />
     </div>
   );
 }
 
-export default App
+export default App;
