@@ -1,11 +1,13 @@
-/*for displaying the menu items only we've created a seprate componenet*/
 import { MdArrowDropDown } from "react-icons/md";
-
 interface menuItems {
   title: string;
-  icon: React.ElementType;
+  icon?: React.ElementType;
   id: string;
   submenu?: menuItems[];
+}
+interface menuItemsProps {
+  title: string;
+  icon?: React.ElementType;
   isActive?: boolean;
   isExpanded?: boolean;
   hasSubmenu?: boolean;
@@ -13,11 +15,9 @@ interface menuItems {
 }
 const menuItemClasses =
   "py-2 px-3 hover:bg-gray-700 rounded-md cursor-pointer flex items-center"; /*instaed of reapeating the styles*/
-const SidebarItem: React.FC<menuItems> = ({
+const SidebarItem: React.FC<menuItemsProps> = ({
   title,
   icon: Icon,
-  id,
-  submenu,
   isActive = false,
   isExpanded = false,
   hasSubmenu = false,
@@ -27,13 +27,11 @@ const SidebarItem: React.FC<menuItems> = ({
   return (
     <>
       <li
-        className={`${menuItemClasses} ${isActive ? "bg-gray-700" : ""} ${
-          hasSubmenu ? "justify-between" : ""
-        }`}
+        className={`${menuItemClasses} ${isActive ? "bg-gray-700" : ""}`}
         onClick={onItemClick}
       >
         <div className="flex items-center">
-          <Icon className="inline-block ml-2" />
+          {Icon && <Icon className="inline-block ml-2" />}
           {title}
         </div>
 
@@ -47,24 +45,6 @@ const SidebarItem: React.FC<menuItems> = ({
           </span>
         )}
       </li>
-
-      {isExpanded && hasSubmenu && (
-        <ul className="ml-4 border-r-2 border-gray-500">
-          {submenu?.map((subitem) => (
-            <SidebarItem
-              key={subitem.id}
-              title={subitem.title}
-              icon={subitem.icon}
-              id={subitem.id}
-              hasSubmenu={!!subitem.submenu}
-              isActive={false}
-              isExpanded={false}
-              onItemClick={onItemClick}
-              submenu={subitem.submenu}
-            />
-          ))}
-        </ul>
-      )}
     </>
   );
 };

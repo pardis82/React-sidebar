@@ -31,6 +31,12 @@ const menuItems = [
         title: "لیست فروش",
         icon: CiViewList,
         id: "sales-list",
+        submenu: [
+          {
+            title: "سالیانه",
+            id: "sales-list-yearly",
+          },
+        ],
       },
       {
         title: "گزارشات فروش",
@@ -58,7 +64,7 @@ const menuItems = [
       {
         title: "تیمی",
         icon: IoPersonAddOutline,
-        id: "responsibility-personal",
+        id: "responsibility-team",
       },
     ],
   },
@@ -74,7 +80,9 @@ const Sidebar = () => {
   const [activeid, setactiveid] = useState<string | null>(null);
   const [expandIds, setexpandIds] = useState<Set<string>>(new Set());
   const SidebarItemClickHandler = (itemId: string, hasSubmenu: boolean) => {
-    setactiveid(itemId);
+    setactiveid(
+      itemId
+    ); /*here it first sees if the hasSubmenu is true then using the prev we undestand which id is expanded then if it's already expanded we close it if not we open it */
     if (hasSubmenu) {
       setexpandIds((prev) => {
         const newSet = new Set(prev);
@@ -87,27 +95,31 @@ const Sidebar = () => {
       });
     }
   };
+  const renderMenuItems = (items: any[], level = 0) => {
+    return items.map((item) => (
+      <div key={item.id}>
+        <SidebarItem
+          title={item.title}
+          icon={item.icon}
+          hasSubmenu={!!item.submenu} /*turns the item.submenu to boolean */
+          isActive={activeid === item.id}
+          isExpanded={expandIds.has(item.id)}
+          onItemClick={() => SidebarItemClickHandler(item.id, !!item.submenu)}
+        />
+
+        {expandIds.has(item.id) && item.submenu && (
+          <ul className="ml-4 border-r-2 border-gray-500">
+            {renderMenuItems(item.submenu, (level = level + 1))}
+          </ul>
+        )}
+      </div>
+    ));
+  };
   return (
     <>
       <div className={menuContainerClasses}>
         <div className={menuCompanyName}>دات نرم افزار</div>
-        <ul>
-          {menuItems.map((item) => (
-            <SidebarItem
-              key={item.id}
-              title={item.title}
-              icon={item.icon}
-              id={item.id}
-              hasSubmenu={!!item.submenu}
-              isActive={activeid === item.id}
-              isExpanded={expandIds.has(item.id)}
-              onItemClick={() =>
-                SidebarItemClickHandler(item.id, !!item.submenu)
-              }
-              submenu={item.submenu}
-            />
-          ))}
-        </ul>
+        <ul>{renderMenuItems(menuItems)}</ul>
       </div>
     </>
   );
