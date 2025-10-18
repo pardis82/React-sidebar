@@ -1,4 +1,4 @@
-import SidebarItem from "./sidebaritem";
+import SidebarItem from "./SidebarItem";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { LuAlarmClockCheck } from "react-icons/lu";
@@ -12,35 +12,100 @@ import { GiNotebook } from "react-icons/gi";
 import { MdComputer } from "react-icons/md";
 import { MdManageAccounts } from "react-icons/md";
 import { SiFramework } from "react-icons/si";
+import { useState } from "react";
+import { CiViewList } from "react-icons/ci";
+import { HiOutlineDocumentReport } from "react-icons/hi";
+import { IoPersonAddOutline } from "react-icons/io5";
 
 const menuItems = [
-  { title: "داشبود", icon: MdOutlineDashboardCustomize },
-  { title: "سرنخ", icon: GiMagnifyingGlass },
-  { title: "فرصت", icon: LuAlarmClockCheck },
-  { title: "مشتریان", icon: IoPeopleOutline },
-  { title: "فروش", icon: MdOutlineSell },
-  { title: "پشتیبانی", icon: RiCustomerService2Fill },
-  { title: "پیامک", icon: MdOutlineTextsms },
-  { title: "تماس", icon: BiPhoneCall },
-  { title: "ایمیل", icon: HiOutlineMail },
-  { title: "پروژه", icon: MdComputer },
-  { title: "یادداشت", icon: GiNotebook },
-  { title: "وظایف", icon: MdManageAccounts },
-  { title: "تنظیمات", icon: SiFramework },
+  { title: "داشبود", icon: MdOutlineDashboardCustomize, id: "dashboard" },
+  { title: "سرنخ", icon: GiMagnifyingGlass, id: "leads" },
+  { title: "فرصت", icon: LuAlarmClockCheck, id: "oppurtunity" },
+  { title: "مشتریان", icon: IoPeopleOutline, id: "customers" },
+  {
+    title: "فروش",
+    icon: MdOutlineSell,
+    id: "sales",
+    submenu: [
+      {
+        title: "لیست فروش",
+        icon: CiViewList,
+        id: "sales-list",
+      },
+      {
+        title: "گزارشات فروش",
+        icon: HiOutlineDocumentReport,
+        id: "sales-report",
+      },
+    ],
+  },
+  { title: "پشتیبانی", icon: RiCustomerService2Fill, id: "helpline" },
+  { title: "پیامک", icon: MdOutlineTextsms, id: "sms" },
+  { title: "تماس", icon: BiPhoneCall, id: "calls" },
+  { title: "ایمیل", icon: HiOutlineMail, id: "email" },
+  { title: "پروژه", icon: MdComputer, id: "project" },
+  { title: "یادداشت", icon: GiNotebook, id: "notes" },
+  {
+    title: "وظایف",
+    icon: MdManageAccounts,
+    id: "responsibility",
+    submenu: [
+      {
+        title: "فردی",
+        icon: IoPersonAddOutline,
+        id: "responsibility-personal",
+      },
+      {
+        title: "تیمی",
+        icon: IoPersonAddOutline,
+        id: "responsibility-personal",
+      },
+    ],
+  },
+  { title: "تنظیمات", icon: SiFramework, id: "settings" },
 ];
 
-  const menuContainerClasses =
-    "w-40 h-screen bg-gray-600 text-white p-4 overflow-y-auto";
+const menuContainerClasses =
+  "w-40 h-screen bg-gray-600 text-white p-4 overflow-y-auto";
 
-    const menuCompanyName = "mb-4 font-semibold text-lg text-center";
+const menuCompanyName = "mb-4 font-semibold text-lg text-center";
+
 const Sidebar = () => {
+  const [activeid, setactiveid] = useState<string | null>(null);
+  const [expandIds, setexpandIds] = useState<Set<string>>(new Set());
+  const SidebarItemClickHandler = (itemId: string, hasSubmenu: boolean) => {
+    setactiveid(itemId);
+    if (hasSubmenu) {
+      setexpandIds((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(itemId)) {
+          newSet.delete(itemId);
+        } else {
+          newSet.add(itemId);
+        }
+        return newSet;
+      });
+    }
+  };
   return (
     <>
       <div className={menuContainerClasses}>
         <div className={menuCompanyName}>دات نرم افزار</div>
         <ul>
-          {menuItems.map((item, index) => (
-            <SidebarItem key={index} title={item.title} icon={item.icon} />
+          {menuItems.map((item) => (
+            <SidebarItem
+              key={item.id}
+              title={item.title}
+              icon={item.icon}
+              id={item.id}
+              hasSubmenu={!!item.submenu}
+              isActive={activeid === item.id}
+              isExpanded={expandIds.has(item.id)}
+              onItemClick={() =>
+                SidebarItemClickHandler(item.id, !!item.submenu)
+              }
+              submenu={item.submenu}
+            />
           ))}
         </ul>
       </div>
