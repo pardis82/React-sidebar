@@ -72,7 +72,7 @@ const menuItems = [
 ];
 
 const menuContainerClasses =
-  "w-40 h-screen bg-gray-600 text-white p-4 overflow-y-auto";
+  "w-60 h-screen bg-gray-600 text-white p-4 overflow-y-auto";
 
 const menuCompanyName = "mb-4 font-semibold text-lg text-center";
 
@@ -97,7 +97,7 @@ const Sidebar = () => {
   };
   const renderMenuItems = (items: any[], level = 0) => {
     return items.map((item) => (
-      <div key={item.id}>
+      <div key={item.id} className="w-full">
         <SidebarItem
           title={item.title}
           icon={item.icon}
@@ -108,7 +108,7 @@ const Sidebar = () => {
         />
 
         {expandIds.has(item.id) && item.submenu && (
-          <ul className="ml-4 border-r-2 border-gray-500">
+          <ul /*className={"ml-4 border-r-2 border-gray-500 w-full"}*/>
             {renderMenuItems(item.submenu, (level = level + 1))}
           </ul>
         )}
