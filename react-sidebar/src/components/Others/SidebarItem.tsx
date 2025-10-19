@@ -14,7 +14,7 @@ interface menuItemsProps {
   onItemClick?: () => void;
 }
 const menuItemClasses =
-  "py-3 px-5 hover:bg-gray-700 rounded-md cursor-pointer flex items-center "; /*instaed of reapeating the styles*/
+  "py-3 px-5 hover:bg-gray-700/50 rounded-md cursor-pointer flex items-center "; /*instaed of reapeating the styles*/
 const SidebarItem: React.FC<menuItemsProps> = ({
   title,
   icon: Icon,
@@ -28,8 +28,8 @@ const SidebarItem: React.FC<menuItemsProps> = ({
     <>
       <li
         className={`${menuItemClasses} ${
-          isActive ? "bg-gray-700" : ""
-        } w-full -mx-3 px-6`}
+          isActive ? "bg-gray-700/75" : ""
+        } w-full px-6`}
         onClick={onItemClick}
       >
         <div className="flex items-center">
@@ -39,7 +39,7 @@ const SidebarItem: React.FC<menuItemsProps> = ({
 
         {hasSubmenu && (
           <span
-            className={`transform transition-transform ${
+            className={` mt-2 ml-4 transform transition-transform ${
               isExpanded ? "rotate-180" : ""
             }`}
           >
