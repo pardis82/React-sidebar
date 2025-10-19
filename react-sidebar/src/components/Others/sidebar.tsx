@@ -72,44 +72,47 @@ const menuItems = [
 ];
 
 const menuContainerClasses =
-  "w-60 h-screen bg-gray-600 text-white p-4 overflow-y-auto position: fixed top-0 bottom-0 right-0;";
+  "w-60 h-screen bg-gray-600 text-white p-4 overflow-y-auto position: fixed top-0 bottom-0 right-0 flex flex-col h-full";
 
 const menuCompanyName = "mb-4 font-semibold text-lg text-center";
 
 const Sidebar = () => {
-  const [activeid, setactiveid] = useState<string | null>(null);
+  const [activeId, setactiveId] = useState<string | null>(null);
   const [expandIds, setexpandIds] = useState<Set<string>>(new Set());
-  const SidebarItemClickHandler = (itemId: string, hasSubmenu: boolean) => {
-    setactiveid(
-      itemId
-    ); /*here it first sees if the hasSubmenu is true then using the prev we undestand which id is expanded then if it's already expanded we close it if not we open it */
-    if (hasSubmenu) {
-      setexpandIds((prev) => {
-        const newSet = new Set(prev);
-        if (newSet.has(itemId)) {
-          newSet.delete(itemId);
-        } else {
-          newSet.add(itemId);
-        }
-        return newSet;
-      });
-    }
+  const SidebarItemClickHandler = (id: string, hasSubmenu: boolean) => {
+    setactiveId(id);
+    if (!hasSubmenu)
+      return; /*here it first sees if the hasSubmenu is true then using the prev we undestand which id is expanded then if it's already expanded we close it if not we open it */
+    setexpandIds((prev) => {
+      const newSet = new Set(prev);
+      newSet.has(id) ? newSet.delete(id) : newSet.add(id);
+      return newSet;
+    });
   };
   const renderMenuItems = (items: any[], level = 0) => {
     return items.map((item) => (
-      <ul key={item.id} className="w-full">
+      <ul
+        key={item.id}
+        className="w-full transition-all duration-300 ease-in-out"
+        style={{ paddingRight: `${level * 16}px` }}
+      >
         <SidebarItem
           title={item.title}
           icon={item.icon}
           hasSubmenu={!!item.submenu} /*turns the item.submenu to boolean */
-          isActive={activeid === item.id}
+          isActive={activeId === item.id}
           isExpanded={expandIds.has(item.id)}
           onItemClick={() => SidebarItemClickHandler(item.id, !!item.submenu)}
         />
-
-        {expandIds.has(item.id) && item.submenu && (
-          <ul>{renderMenuItems(item.submenu, level + 1)}</ul>
-        )}
+        <div
+          className={` transition-all duration-200 ease-in-out overflow-hidden ${
+            expandIds.has(item.id)
+              ? "max-h-96 opacity-100"
+              : "max-h-0 opacity-0"
+          }`}
+        >
+          {item.submenu && <ul>{renderMenuItems(item.submenu, level + 1)}</ul>}
+        </div>
       </ul>
     ));
   };
@@ -117,7 +120,9 @@ const Sidebar = () => {
     <>
       <div className={menuContainerClasses}>
         <div className={menuCompanyName}>دات نرم افزار</div>
-        {renderMenuItems(menuItems)}
+        <div className="flex-1 overflow-y-auto">
+          {renderMenuItems(menuItems)}
+        </div>
       </div>
     </>
   );

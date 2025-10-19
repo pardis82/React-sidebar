@@ -1,11 +1,11 @@
 import { MdArrowDropDown } from "react-icons/md";
-interface menuItems {
+interface MenuItems {
   title: string;
   icon?: React.ElementType;
   id: string;
-  submenu?: menuItems[];
+  submenu?: MenuItems[];
 }
-interface menuItemsProps {
+interface MenuItemsProps {
   title: string;
   icon?: React.ElementType;
   isActive?: boolean;
@@ -14,8 +14,8 @@ interface menuItemsProps {
   onItemClick?: () => void;
 }
 const menuItemClasses =
-  "py-3 px-5 hover:bg-gray-700/50 rounded-md cursor-pointer flex items-center "; /*instaed of reapeating the styles*/
-const SidebarItem: React.FC<menuItemsProps> = ({
+  "py-3 px-5 hover:bg-gray-700/50 rounded-md cursor-pointer flex items-center transition-colors duration-100 select-none "; /*instaed of reapeating the styles*/
+const SidebarItem: React.FC<MenuItemsProps> = ({
   title,
   icon: Icon,
   isActive = false,
@@ -39,7 +39,7 @@ const SidebarItem: React.FC<menuItemsProps> = ({
 
         {hasSubmenu && (
           <span
-            className={` mt-2 ml-4 transform transition-transform ${
+            className={` mt-2 ml-4 transform transition-transform duration-300 ease-in-out ${
               isExpanded ? "rotate-180" : ""
             }`}
           >
