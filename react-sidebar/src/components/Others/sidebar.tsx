@@ -12,10 +12,11 @@ import { GiNotebook } from "react-icons/gi";
 import { MdComputer } from "react-icons/md";
 import { MdManageAccounts } from "react-icons/md";
 import { SiFramework } from "react-icons/si";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CiViewList } from "react-icons/ci";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import { IoPersonAddOutline } from "react-icons/io5";
+import { ImMenu } from "react-icons/im";
 
 const menuItems = [
   { title: "داشبود", icon: MdOutlineDashboardCustomize, id: "dashboard" },
@@ -71,12 +72,24 @@ const menuItems = [
   { title: "تنظیمات", icon: SiFramework, id: "settings" },
 ];
 
-const menuContainerClasses =
-  "w-60 h-screen bg-gray-600 text-white p-4 overflow-y-auto position: fixed top-0 bottom-0 right-0 flex flex-col h-full";
+const menuContainerClasses = `bg-gray-600 text-white h-screen fixed top-0 right-0 flex flex-col transition-all duration-300 ease-in-out overflow-y-auto`;
 
-const menuCompanyName = "mb-4 font-semibold text-lg text-center";
+const menuCompanyName =
+  "mb-4 font-semibold text-lg text-center hidden md:inline";
 
 const Sidebar = () => {
+  const [iscollapsed, setCollapsed] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setCollapsed(false);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const [activeId, setactiveId] = useState<string | null>(null);
   const [expandIds, setexpandIds] = useState<Set<string>>(new Set());
   const SidebarItemClickHandler = (id: string, hasSubmenu: boolean) => {
@@ -103,6 +116,7 @@ const Sidebar = () => {
           isActive={activeId === item.id}
           isExpanded={expandIds.has(item.id)}
           onItemClick={() => SidebarItemClickHandler(item.id, !!item.submenu)}
+          isCollapsed={iscollapsed}
         />
         <div
           className={` transition-all duration-200 ease-in-out overflow-hidden ${
@@ -118,7 +132,17 @@ const Sidebar = () => {
   };
   return (
     <>
-      <div className={menuContainerClasses}>
+      <button
+        className="md:hidden fixed top-4 right-4 z-50 text-white text-3xl"
+        onClick={() => setCollapsed((prev) => !prev)}
+      >
+        <ImMenu />
+      </button>
+      <div
+        className={`${menuContainerClasses} fixed top-0 right-0 transition-transform duration-300 ease-in-out  ${
+          iscollapsed ? "w-20" : "w-60"
+        }`}
+      >
         <div className={menuCompanyName}>دات نرم افزار</div>
         <div className="flex-1 overflow-y-auto">
           {renderMenuItems(menuItems)}

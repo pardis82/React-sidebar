@@ -12,6 +12,7 @@ interface MenuItemsProps {
   isExpanded?: boolean;
   hasSubmenu?: boolean;
   onItemClick?: () => void;
+  isCollapsed?: boolean;
 }
 const menuItemClasses =
   "py-3 px-5 hover:bg-gray-700/50 rounded-md cursor-pointer flex items-center transition-colors duration-100 select-none "; /*instaed of reapeating the styles*/
@@ -22,6 +23,7 @@ const SidebarItem: React.FC<MenuItemsProps> = ({
   isExpanded = false,
   hasSubmenu = false,
   onItemClick,
+  isCollapsed = false,
 }) => {
   /* react.fc shows that the menuItems is a functional component */
   return (
@@ -33,8 +35,20 @@ const SidebarItem: React.FC<MenuItemsProps> = ({
         onClick={onItemClick}
       >
         <div className="flex items-center">
-          {Icon && <Icon className="inline-block ml-2" />}
-          {title}
+          {Icon && (
+            <Icon
+              className={`inline-block ml-2 transition-all duartion-200 ${
+                isCollapsed ? "text-2xl mx-auto" : "text-lg"
+              }`}
+            />
+          )}
+          <span
+            className={`transition-all duration-200 ease-in-out ${
+              isCollapsed ? "hidden" : "inline"
+            }`}
+          >
+            {title}
+          </span>
         </div>
 
         {hasSubmenu && (
