@@ -94,14 +94,24 @@ const Sidebar = () => {
   const [expandIds, setexpandIds] = useState<Set<string>>(new Set());
   const SidebarItemClickHandler = (id: string, hasSubmenu: boolean) => {
     setactiveId(id);
-    if (!hasSubmenu)
-      return; /*here it first sees if the hasSubmenu is true then using the prev we undestand which id is expanded then if it's already expanded we close it if not we open it */
-    setexpandIds((prev) => {
-      const newSet = new Set(prev);
-      newSet.has(id) ? newSet.delete(id) : newSet.add(id);
-      return newSet;
-    });
+    // if (!hasSubmenu)
+    //   return; /*here it first sees if the hasSubmenu is true then using the prev we undestand which id is expanded then if it's already expanded we close it if not we open it */
+    if (hasSubmenu && !iscollapsed)
+      setexpandIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.has(id) ? newSet.delete(id) : newSet.add(id);
+        return newSet;
+      });
+    if (iscollapsed && hasSubmenu) {
+      setCollapsed(false);
+    }
   };
+  useEffect(() => {
+    if (iscollapsed) {
+      setexpandIds(new Set());
+    }
+  }, [iscollapsed]);
+
   const renderMenuItems = (items: any[], level = 0) => {
     return items.map((item) => (
       <ul
@@ -132,17 +142,20 @@ const Sidebar = () => {
   };
   return (
     <>
-      <button
-        className="md:hidden fixed top-4 right-4 z-50 text-white text-3xl"
-        onClick={() => setCollapsed((prev) => !prev)}
-      >
-        <ImMenu />
-      </button>
       <div
         className={`${menuContainerClasses} fixed top-0 right-0 transition-transform duration-300 ease-in-out  ${
           iscollapsed ? "w-20" : "w-60"
         }`}
       >
+        <div className="lg:hidden flex px-6 py-5 items-center ">
+          <button
+            className="lg:hidden z-50 text-white text-2xl"
+            onClick={() => setCollapsed((prev) => !prev)}
+          >
+            <ImMenu />
+          </button>
+        </div>
+
         <div className={menuCompanyName}>دات نرم افزار</div>
         <div
           className="flex-1 overflow-y-auto [&::-webkit-scrollbar-track]:bg-gray-200
