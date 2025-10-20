@@ -1,6 +1,1 @@
 @import "tailwindcss";
-
-.custom-scrollbar{
-    scrollbar-track-color: var(--color-gray-600);
-
-}
