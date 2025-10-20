@@ -1,5 +1,6 @@
 import { MdArrowDropDown } from "react-icons/md";
-interface MenuItemsProps {
+
+export interface MenuItemsProps {
   title: string;
   icon?: React.ElementType;
   isActive?: boolean;
@@ -8,6 +9,7 @@ interface MenuItemsProps {
   onItemClick?: () => void;
   isCollapsed?: boolean;
 }
+
 const menuItemClasses =
   "py-3 px-5 hover:bg-gray-700/50 rounded-md cursor-pointer flex items-center transition-colors duration-100 select-none "; /*instaed of reapeating the styles*/
 const SidebarItem: React.FC<MenuItemsProps> = ({

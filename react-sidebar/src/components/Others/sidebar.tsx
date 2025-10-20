@@ -72,16 +72,11 @@ const menuItems = [
   { title: "تنظیمات", icon: SiFramework, id: "settings" },
 ];
 
-const menuContainerClasses = `bg-gray-600 text-white h-screen fixed top-0 right-0 flex flex-col transition-all duration-300 ease-in-out overflow-y-auto`;
-
-const menuCompanyName =
-  "mb-4 mt-3 font-semibold text-lg text-center hidden md:inline";
-
 const Sidebar = () => {
   const [iscollapsed, setCollapsed] = useState(false);
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1024) {
         setCollapsed(false);
       }
     };
@@ -106,11 +101,6 @@ const Sidebar = () => {
       setCollapsed(false);
     }
   };
-  useEffect(() => {
-    if (iscollapsed) {
-      setexpandIds(new Set());
-    }
-  }, [iscollapsed]);
 
   const renderMenuItems = (items: any[], level = 0) => {
     return items.map((item) => (
@@ -140,22 +130,34 @@ const Sidebar = () => {
       </ul>
     ));
   };
+  const menuContainerClasses = `bg-gray-600 text-white h-screen fixed top-0 right-0 flex flex-col transition-all duration-300 ease-in-out overflow-y-auto z-40
+  lg:relative lg:translate-x-0 lg:w-60 lg:z-auto  ${
+    iscollapsed ? "translate-x-full w-60" : "translate-x-0 w-60"
+  } `;
+  const menuCompanyName =
+    "mb-4 mt-3 font-semibold text-lg text-center md:inline";
   return (
     <>
+      {/* Mobile Overlay - Shows behind sidebar when open */}
+      {!iscollapsed && (
+        <div
+          className="lg:hidden fixed inset-0  bg-opacity-50 z-30"
+          onClick={() => setCollapsed(true)}
+        />
+      )}
+      <div className="lg:hidden flex items-center fixed top-2 right-4 z-50 bg-gray-600 rounded-lg p-2 transition-all duration-200 ">
+        <button
+          className="lg:hidden z-50 text-white text-2xl "
+          onClick={() => setCollapsed((prev) => !prev)}
+        >
+          <ImMenu />
+        </button>
+      </div>
       <div
         className={`${menuContainerClasses} fixed top-0 right-0 transition-transform duration-300 ease-in-out  ${
           iscollapsed ? "w-20" : "w-60"
         }`}
       >
-        <div className="lg:hidden flex px-6 py-5 items-center ">
-          <button
-            className="lg:hidden z-50 text-white text-2xl"
-            onClick={() => setCollapsed((prev) => !prev)}
-          >
-            <ImMenu />
-          </button>
-        </div>
-
         <div className={menuCompanyName}>دات نرم افزار</div>
         <div
           className="flex-1 overflow-y-auto [&::-webkit-scrollbar-track]:bg-gray-200
