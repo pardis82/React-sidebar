@@ -1,10 +1,10 @@
 import { MdArrowDropDown } from "react-icons/md";
-interface MenuItems {
-  title: string;
-  icon?: React.ElementType;
-  id: string;
-  submenu?: MenuItems[];
-}
+// interface MenuItems {
+//   title: string;
+//   icon?: React.ElementType;
+//   id: string;
+//   submenu?: MenuItems[];
+// }
 interface MenuItemsProps {
   title: string;
   icon?: React.ElementType;

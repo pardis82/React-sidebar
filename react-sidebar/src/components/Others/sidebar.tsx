@@ -75,7 +75,7 @@ const menuItems = [
 const menuContainerClasses = `bg-gray-600 text-white h-screen fixed top-0 right-0 flex flex-col transition-all duration-300 ease-in-out overflow-y-auto`;
 
 const menuCompanyName =
-  "mb-4 font-semibold text-lg text-center hidden md:inline";
+  "mb-4 mt-3 font-semibold text-lg text-center hidden md:inline";
 
 const Sidebar = () => {
   const [iscollapsed, setCollapsed] = useState(false);
@@ -144,7 +144,12 @@ const Sidebar = () => {
         }`}
       >
         <div className={menuCompanyName}>دات نرم افزار</div>
-        <div className="flex-1 overflow-y-auto">
+        <div
+          className="flex-1 overflow-y-auto [&::-webkit-scrollbar-track]:bg-gray-200
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-thumb]:bg-gray-400
+                [scrollbar-color:rgb(156_163_175)_rgb(74_85_101)]"
+        >
           {renderMenuItems(menuItems)}
         </div>
       </div>
