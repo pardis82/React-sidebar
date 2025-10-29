@@ -10,8 +10,8 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 export default function TextInput({
   label,
   errorMessage,
-  containerClassName,
   className,
+  containerClassName,
   value,
   ...props
 }: Props) {
@@ -20,10 +20,10 @@ export default function TextInput({
   const shouldShowPlaceholder = hasValue || isFocused;
 
   const BaseContainerclass =
-    " text-xs pt-4 pb-4 px-2 block w-full bg-transparent focus:outline-none focus:ring-1 border border-gray-300 focus:ring-purple-500 rounded-lg peer placeholder:delay-90  ";
+    " border border-gray-300 text-gray-700 text-base rounded-lg block w-full pt-3 pb-3 px-2 bg-transparent focus:outline-none focus:ring-1  focus:ring-purple-500  peer placeholder:delay-90 placeholder:text-sm ";
   const ErrorContainer = "border-red-400 focus:ring-red-500";
   const NormalLabelClass =
-    "text-sm font-medium text-gray-700 whitespace-nowrap pointer-events-none absolute transition-all duration-300 transform -translate-y-1/2 scale-100 top-1/2 right-3";
+    "text-sm font-medium text-gray-500 whitespace-nowrap pointer-events-none absolute transition-all duration-300 transform -translate-y-1/2 scale-100 top-1/2 right-3";
 
   return (
     <>
@@ -53,7 +53,7 @@ export default function TextInput({
                       "scale-90 -translate-y-5 top-2 font-normal bg-inherit px-3",
                       errorMessage ? "text-red-500" : "text-purple-500 "
                     )
-                  : "scale-100 -translate-y-1/2 top-1/2 text-gray-500 font-normal"
+                  : "scale-100 -translate-y-1/2 top-1/2 text-gray-500 text-xs font-normal"
               )}
             >
               {label}

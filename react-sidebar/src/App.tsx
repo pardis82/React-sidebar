@@ -1,6 +1,7 @@
 import Sidebar from "./components/Others/sidebar";
 import { Route, Routes } from "react-router-dom";
 import TextInput from "./components/TextInput";
+import TextArea from "./components/TextArea";
 import "./App.css";
 import { useState } from "react";
 // Add these basic page components
@@ -19,6 +20,13 @@ function Contact() {
 function App() {
   return (
     <>
+      <div className="m-10 flex items-center">
+        <TextArea label="name" />
+      </div>
+      <div className="m-10 flex items-center">
+        <TextArea errorMessage="wrong" />
+      </div>
+
       <div className="m-10 flex items-center ">
         <TextInput
           label=" نام خانوادگی"
