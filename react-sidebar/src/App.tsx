@@ -17,17 +17,21 @@ function Contact() {
 }
 
 function App() {
-  const [value, setValue] = useState("");
   return (
     <>
-      <TextInput
-        id="name"
-        label="نام"
-        value={value}
-        placeholder="نام خود را وارد کنید"
-        type="text"
-        onChange={setValue}
-      />
+      <div className="m-10 flex items-center ">
+        <TextInput
+          label=" نام خانوادگی"
+          placeholder="نام خانوادگی خود را وارد کنید"
+        />
+      </div>
+      <div className="m-10 flex items-center">
+        <TextInput label="نام" placeholder="نام خود را وارد کنید" />
+      </div>
+      <div className="m-10 flex items-center">
+        <TextInput label="ایمیل" errorMessage="ایمیل اشتباه است" />
+      </div>
+
       {/* <div className="app flex h-screen">
         <Sidebar />
         <main className="flex-1 overflow-auto">
