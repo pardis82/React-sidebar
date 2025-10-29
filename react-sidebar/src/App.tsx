@@ -23,7 +23,7 @@ function App() {
       <Sidebar />
 
       {/* Main content area */}
-      <main className="flex-1 overflow-auto flex flex-col items-center justify-center bg-gray-50">
+      <main className="bg-white flex-1 overflow-auto flex flex-col items-center justify-center bg-gray-50">
         {/* Centered content */}
         <div className="space-y-6 w-full max-w-md">
           <TextArea label="name" />
