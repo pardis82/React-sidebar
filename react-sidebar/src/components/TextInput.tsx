@@ -20,12 +20,11 @@ export default function TextInput({
   const shouldShowPlaceholder = hasValue || isFocused;
 
   const BaseContainerclass =
-    " text-xs pt-6 pb-2 px-3 block w-full bg-transparent focus:outline-none focus:ring-2 border border-gray-300 focus:ring-purple-500 rounded-lg  peer ";
+    " text-xs pt-4 pb-4 px-2 block w-full bg-transparent focus:outline-none focus:ring-1 border border-gray-300 focus:ring-purple-500 rounded-lg peer placeholder:delay-90  ";
   const ErrorContainer = "border-red-400 focus:ring-red-500";
   const NormalLabelClass =
-    "text-sm font-medium text-gray-700 whitespace-nowrap pointer-events-none absolute transition-all duration-400 transform -translate-y-1/2 scale-100 top-1/2 right-3";
-  const FloatingLabelClass =
-    "peer-focus:top-2 peer-focus:-translate-y-5 peer-focus:scale-90 peer-focus:text-gray-500 peer-focus:bg-inherit peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:bg-transparent";
+    "text-sm font-medium text-gray-700 whitespace-nowrap pointer-events-none absolute transition-all duration-300 transform -translate-y-1/2 scale-100 top-1/2 right-3";
+
   return (
     <>
       <div className={clsx(containerClassName)}>
@@ -38,7 +37,8 @@ export default function TextInput({
             className={clsx(
               BaseContainerclass,
               errorMessage && ErrorContainer,
-              !shouldShowPlaceholder && "placeholder-transparent ",
+              !shouldShowPlaceholder &&
+                "placeholder-transparent flex items-center justify-center ",
               className
             )}
             {...props}
