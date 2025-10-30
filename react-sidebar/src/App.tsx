@@ -2,6 +2,7 @@ import Sidebar from "./components/Others/sidebar";
 import { Route, Routes } from "react-router-dom";
 import TextInput from "./components/TextInput";
 import TextArea from "./components/TextArea";
+import TextField from "./components/Others/TextField";
 import "./App.css";
 
 function Home() {
@@ -20,7 +21,7 @@ function App() {
   return (
     <div className="flex h-screen">
       {/* Sidebar always visible on the left */}
-      <Sidebar />
+      {/* <Sidebar /> */}
 
       {/* Main content area */}
       <main className="bg-white flex-1 overflow-auto flex flex-col items-center justify-center bg-gray-50">
@@ -34,6 +35,16 @@ function App() {
           />
           <TextInput label="نام" placeholder="نام خود را وارد کنید" />
           <TextInput label="ایمیل" errorMessage="ایمیل اشتباه است" />
+
+          <TextField
+            label="نام"
+            placeholder="نام خود را وارد کنید"
+            multiline
+            rows={5}
+            maxrows={10}
+            defaultValue="نام"
+          />
+          <TextField label="نام" placeholder="نام خود را وارد کنید" />
         </div>
 
         {/* Example: if you later enable routes */}
