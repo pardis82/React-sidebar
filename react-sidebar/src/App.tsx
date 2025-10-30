@@ -1,5 +1,6 @@
 import Sidebar from "./components/Others/sidebar";
 import { Route, Routes } from "react-router-dom";
+import { useState } from "react";
 import TextInput from "./components/TextInput";
 import TextArea from "./components/TextArea";
 import TextField from "./components/Others/TextField";
@@ -42,7 +43,7 @@ function App() {
             multiline
             rows={5}
             maxrows={10}
-            defaultValue="نام"
+            defaultValue="name"
           />
           <TextField label="نام" placeholder="نام خود را وارد کنید" />
         </div>

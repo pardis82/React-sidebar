@@ -1,4 +1,3 @@
-import React from "react";
 import clsx from "clsx";
 import { useState, type InputHTMLAttributes } from "react";
 
@@ -26,14 +25,13 @@ export default function TextField({
   ...props
 }: Props) {
   const hasValue = !!value && String(value).length > 0;
-  const hasDefaultValue = !!defaultvalue && String(defaultvalue).length > 0;
   const [isFocused, setIsFocused] = useState(false);
   const shouldShowPlaceholder = multiline
     ? true
-    : hasDefaultValue || hasValue || isFocused;
+    : defaultvalue || hasValue || isFocused;
   const shouldFloatLabel = multiline
     ? true
-    : hasDefaultValue || hasValue || isFocused;
+    : defaultvalue || hasValue || isFocused;
 
   const BaseContainerclass =
     " border border-gray-300 text-gray-700 text-base rounded-lg block w-full pt-3 pb-3 px-2 bg-transparent focus:outline-none focus:ring-1  focus:ring-purple-500  peer placeholder:delay-90 placeholder:text-sm ";
@@ -46,21 +44,21 @@ export default function TextField({
     <>
       <div className={clsx(containerClassName)}>
         <div className="relative bg-white rounded-lg">
-          {React.createElement(InputType, {
-            onBlur: () => setIsFocused(false),
-            onFocus: () => setIsFocused(true),
-            placeholder: shouldShowPlaceholder ? props.placeholder : " ",
-            id: props.id,
-            className: clsx(
+          <InputType
+            onBlur={() => setIsFocused(false)}
+            onFocus={() => setIsFocused(true)}
+            placeholder={shouldShowPlaceholder ? props.placeholder : " "}
+            id={props.id}
+            className={clsx(
               BaseContainerclass,
               errorMessage && ErrorContainer,
               !shouldShowPlaceholder &&
                 "placeholder-transparent flex items-center justify-center ",
               className
-            ),
-            ...MultiLineProps,
-            ...props,
-          })}
+            )}
+            {...MultiLineProps}
+            {...props}
+          />
           {label && (
             <label
               htmlFor={props.id}
