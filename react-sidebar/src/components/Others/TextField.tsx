@@ -22,11 +22,11 @@ export default function TextField({
   minrows,
   maxrows,
   multiline = false,
-  id, // Extract id from props
-  name, // Extract name from props
+  id,
+  name,
   ...props
 }: Props) {
-  // Generate a unique ID if none provided
+  // Generate a unique ID
   const generatedId = useId();
   const inputId = id || generatedId;
 
@@ -43,7 +43,7 @@ export default function TextField({
     "border border-gray-300 text-gray-700 text-base rounded-lg block w-full pt-3 pb-3 px-2 bg-transparent focus:outline-none focus:ring-1 focus:ring-purple-500 peer placeholder:delay-90 placeholder:text-sm";
   const ErrorContainer = "border-red-400 focus:ring-red-500";
   const NormalLabelClass =
-    "text-sm font-medium text-gray-500 whitespace-nowrap pointer-events-none absolute transition-all duration-300 transform origin-left right-3";
+    "text-sm font-medium text-gray-500 whitespace-nowrap pointer-events-none absolute transition-all duration-300 transform  right-3";
 
   const InputType = multiline ? "textarea" : "input";
 
@@ -86,7 +86,7 @@ export default function TextField({
                 ? clsx(
                     "scale-90 -translate-y-5 top-2 font-normal bg-white px-1",
                     multiline &&
-                      "top-2 -translate-y-5 scale-90 font-normal bg-white px-1",
+                      "scale-90 top-2 -translate-y-5 scale-90 font-normal bg-white px-1",
                     errorMessage ? "text-red-500" : "text-purple-500"
                   )
                 : clsx(
