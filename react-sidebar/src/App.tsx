@@ -1,8 +1,6 @@
 import Sidebar from "./components/Others/sidebar";
 import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
-import TextInput from "./components/TextInput";
-import TextArea from "./components/TextArea";
 import TextField from "./components/Others/TextField";
 import "./App.css";
 
@@ -25,27 +23,19 @@ function App() {
       {/* <Sidebar /> */}
 
       {/* Main content area */}
-      <main className="bg-white flex-1 overflow-auto flex flex-col items-center justify-center bg-gray-50">
+      <main className="bg-white flex-1 overflow-auto flex  items-center justify-center bg-gray-50">
         {/* Centered content */}
         <div className="space-y-6 w-full max-w-md">
-          <TextArea label="name" />
-          <TextArea errorMessage="wrong" />
-          <TextInput
-            label="نام خانوادگی"
-            placeholder="نام خانوادگی خود را وارد کنید"
-          />
-          <TextInput label="نام" placeholder="نام خود را وارد کنید" />
-          <TextInput label="ایمیل" errorMessage="ایمیل اشتباه است" />
-
           <TextField
             label="نام"
-            placeholder="نام خود را وارد کنید"
             multiline
-            rows={5}
+            minrows={5}
             maxrows={10}
             defaultValue="name"
           />
           <TextField label="نام" placeholder="نام خود را وارد کنید" />
+          <TextField errorMessage="اشتباه" />
+          <TextField multiline errorMessage="اشتباه" />
         </div>
 
         {/* Example: if you later enable routes */}
