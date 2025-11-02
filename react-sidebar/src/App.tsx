@@ -1,6 +1,7 @@
 import Sidebar from "./components/Others/sidebar";
 import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
+import SelectTextField from "./components/Others/SelectTextFields";
 
 import TextField from "./components/Others/TextField";
 import "./App.css";
@@ -32,11 +33,31 @@ function App() {
             multiline
             minrows={5}
             maxrows={10}
-            defaultValue="name"
+            defaultValue="پردیس"
           />
           <TextField label="نام" placeholder="نام خود را وارد کنید" />
           <TextField errorMessage="اشتباه" />
           <TextField multiline errorMessage="اشتباه" />
+          <SelectTextField
+            errorMessage="wrong"
+            options={[
+              { value: "1", label: "Default value" },
+              {
+                value: "2",
+                label: "one",
+              },
+            ]}
+          />
+          <SelectTextField
+            label="name"
+            options={[
+              { value: "1", label: "Default value" },
+              {
+                value: "2",
+                label: "one",
+              },
+            ]}
+          />
         </div>
 
         {/* Example: if you later enable routes */}
