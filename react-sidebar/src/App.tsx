@@ -2,9 +2,11 @@ import Sidebar from "./components/Others/sidebar";
 import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import SelectTextField from "./components/Others/SelectTextFields";
+import Select from "./components/Others/SelectField";
 
 import TextField from "./components/Others/TextField";
 import "./App.css";
+import { Label } from "@headlessui/react";
 
 function Home() {
   return <div className="p-6">Home Page</div>;
@@ -17,8 +19,12 @@ function About() {
 function Contact() {
   return <div className="p-6">Contact Page</div>;
 }
-
+const inputs = [
+  { value: "1", Label: "one1" },
+  { value: "2", Label: "two2" },
+];
 function App() {
+  const [value, setValue] = useState();
   return (
     <div className="flex h-screen">
       {/* Sidebar always visible on the left */}
@@ -58,6 +64,7 @@ function App() {
               },
             ]}
           />
+          <Select options={inputs} value={value} onChange={setValue} />
         </div>
 
         {/* Example: if you later enable routes */}
