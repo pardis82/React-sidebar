@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import SelectTextField from "./components/Others/SelectTextFields";
 import Select from "./components/Others/SelectField";
+import SimpleTooltip from "./components/Others/SimpleTooltip";
 import type { OptionProps } from "./components/Others/SelectField";
 import TextField from "./components/Others/TextField";
 import "./App.css";
@@ -56,6 +57,8 @@ function App() {
             onChange={setSelected}
             label="انتخاب شما"
           />
+
+          <SimpleTooltip content="Hi" />
         </div>
 
         {/* Example: if you later enable routes */}
