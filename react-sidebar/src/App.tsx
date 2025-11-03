@@ -3,10 +3,12 @@ import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import SelectTextField from "./components/Others/SelectTextFields";
 import Select from "./components/Others/SelectField";
-
+interface OptionProps {
+  value: string | number;
+  label: string;
+}
 import TextField from "./components/Others/TextField";
 import "./App.css";
-import { Label } from "@headlessui/react";
 
 function Home() {
   return <div className="p-6">Home Page</div>;
@@ -19,12 +21,15 @@ function About() {
 function Contact() {
   return <div className="p-6">Contact Page</div>;
 }
-const inputs = [
-  { value: "1", Label: "one1" },
-  { value: "2", Label: "two2" },
-];
+
 function App() {
-  const [value, setValue] = useState();
+  const [selected, setSelected] = useState<OptionProps[]>([]);
+
+  const options: OptionProps[] = [
+    { value: "1", label: "Option 1" },
+    { value: "2", label: "Option 2" },
+    { value: "3", label: "Option 3" },
+  ];
   return (
     <div className="flex h-screen">
       {/* Sidebar always visible on the left */}
@@ -64,7 +69,14 @@ function App() {
               },
             ]}
           />
-          <Select options={inputs} value={value} onChange={setValue} />
+
+          <Select
+            options={options}
+            value={selected} // This can be undefined (no selection)
+            onChange={setSelected}
+            label="Choose an option"
+            erroMessage={!selected ? "Please select an option" : undefined}
+          />
         </div>
 
         {/* Example: if you later enable routes */}
