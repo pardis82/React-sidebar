@@ -9,7 +9,7 @@ import {
 } from "@headlessui/react";
 import { Check, ChevronDown } from "lucide-react";
 
-interface OptionProps {
+export interface OptionProps {
   value: string | number;
   label: string;
 }

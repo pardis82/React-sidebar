@@ -3,10 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import SelectTextField from "./components/Others/SelectTextFields";
 import Select from "./components/Others/SelectField";
-interface OptionProps {
-  value: string | number;
-  label: string;
-}
+import type { OptionProps } from "./components/Others/SelectField";
 import TextField from "./components/Others/TextField";
 import "./App.css";
 
