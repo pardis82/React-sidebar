@@ -31,9 +31,10 @@ type SelectProps = {
   label?: string;
   erroMessage?: string;
   className?: string;
+  containerClassName?: string; // Add containerClassName to match TextField
   showSelectAll?: boolean;
-  selectAllText?: string; // Custom text for "Select All"
-  deselectAllText?: string; // Custom text for "Deselect All"
+  selectAllText?: string;
+  deselectAllText?: string;
 } & (SingleSelectProps | MultipleSelectProps);
 
 export default function Select(props: SelectProps) {
@@ -43,9 +44,10 @@ export default function Select(props: SelectProps) {
     multiple,
     erroMessage,
     className,
+    containerClassName, // Destructure containerClassName
     showSelectAll = false,
-    selectAllText = "Select All", // Default text
-    deselectAllText = "Deselect All", // Default text
+    selectAllText = "Select All",
+    deselectAllText = "Deselect All",
   } = props;
   const generatedId = useId();
   const [isFocused, setIsFocused] = useState(false);
@@ -81,7 +83,9 @@ export default function Select(props: SelectProps) {
   };
 
   return (
-    <div className="flex flex-col gap-1 w-44">
+    <div className={clsx("flex flex-col gap-1 w-full", containerClassName)}>
+      {" "}
+      {/* Changed to w-full and added containerClassName */}
       <div className="relative bg-white rounded-lg">
         <Listbox
           value={props.value}
@@ -94,10 +98,11 @@ export default function Select(props: SelectProps) {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             className={clsx(
-              "relative w-full cursor-default rounded-lg bg-white pt-5 pb-2 pl-10 pr-3 text-right border focus:outline-none focus:ring-1 text-sm",
+              "relative w-full cursor-default rounded-lg bg-white pt-5 pb-2 pl-10 pr-3 text-right border focus:outline-none focus:ring-1 text-sm", // Already has w-full
               erroMessage
                 ? "border-red-300 focus:ring-red-500"
-                : "border-gray-300 focus:ring-purple-500"
+                : "border-gray-300 focus:ring-purple-500",
+              className // Apply className to the button instead of outer container
             )}
           >
             <span className="block truncate text-gray-900">
@@ -203,7 +208,6 @@ export default function Select(props: SelectProps) {
           </label>
         )}
       </div>
-
       {erroMessage && (
         <p className="text-red-500 text-sm mt-1">{erroMessage}</p>
       )}
