@@ -49,33 +49,17 @@ function App() {
           <TextField label="نام" placeholder="نام خود را وارد کنید" />
           <TextField errorMessage="اشتباه" />
           <TextField multiline errorMessage="اشتباه" />
-          <SelectTextField
-            errorMessage="wrong"
-            options={[
-              { value: "1", label: "Default value" },
-              {
-                value: "2",
-                label: "one",
-              },
-            ]}
-          />
-          <SelectTextField
-            label="name"
-            options={[
-              { value: "1", label: "Default value" },
-              {
-                value: "2",
-                label: "one",
-              },
-            ]}
-          />
 
           <Select
-            options={options}
-            value={selected} // This can be undefined (no selection)
+            options={[
+              { value: "1", label: "Option 1" },
+              { value: "2", label: "Option 2" },
+              { value: "3", label: "Option 3" },
+            ]}
+            multiple={true}
+            value={selected}
             onChange={setSelected}
-            label="Choose an option"
-            erroMessage={!selected ? "Please select an option" : undefined}
+            label="تست"
           />
         </div>
 

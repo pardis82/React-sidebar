@@ -41,29 +41,51 @@ export default function Select(props: SelectProps) {
   // Handle display text for both single and multiple modes
   const getButtonText = () => {
     if (multiple) {
-      const selectedValues = props.value || [];
+      const selectedValues = (props.value as OptionProps[]) || [];
       if (selectedValues.length === 0) return "Please select items";
       if (selectedValues.length === 1) return selectedValues[0].label;
       return `${selectedValues.length} items selected`;
     }
-    return props.value?.label || "Please select an item";
+    const selectedValue = props.value as OptionProps | undefined;
+    return selectedValue?.label || "Please select an item";
   };
 
-  // Check if an option is selected (works for both single and multiple)
+  // Type-safe handlers for Listbox
+  const handleChange = (value: OptionProps | OptionProps[]) => {
+    if (multiple) {
+      (props.onChange as (value: OptionProps[]) => void)?.(
+        value as OptionProps[]
+      );
+    } else {
+      (props.onChange as (value: OptionProps) => void)?.(value as OptionProps);
+    }
+  };
+
+  const getListboxValue = () => {
+    if (multiple) {
+      return (props.value as OptionProps[]) || [];
+    }
+    return props.value as OptionProps | undefined;
+  };
+
+  // Check if an option is selected manually
   const isOptionSelected = (option: OptionProps) => {
     if (multiple) {
-      return props.value?.some((item) => item.value === option.value) || false;
+      const selectedValues = (props.value as OptionProps[]) || [];
+      return selectedValues.some((item) => item.value === option.value);
+    } else {
+      const selectedValue = props.value as OptionProps | undefined;
+      return selectedValue?.value === option.value;
     }
-    return props.value?.value === option.value;
   };
 
   return (
     <Listbox
-      value={props.value}
-      onChange={props.onChange as any}
+      value={getListboxValue()}
+      onChange={handleChange}
       multiple={multiple}
     >
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 w-44">
         {/* Select container with always-floated label */}
         <div className="relative bg-white rounded-lg">
           <ListboxButton
@@ -113,14 +135,14 @@ export default function Select(props: SelectProps) {
           )}
         </div>
 
-        {/* Dropdown Options */}
+        {/* Dropdown Options - Fixed width and positioning */}
         <Transition
           as={Fragment}
           leave="transition ease-in duration-100"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <ListboxOptions className="absolute mt-12 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none z-10">
+          <ListboxOptions className="absolute mt-12 w-44 max-h-60 overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none z-10">
             {options.map((option) => (
               <ListboxOption
                 key={option.value}
@@ -132,25 +154,29 @@ export default function Select(props: SelectProps) {
                   )
                 }
               >
-                {({ selected }) => (
-                  <>
-                    <span
-                      className={clsx(
-                        "block truncate",
-                        isOptionSelected(option) ? "font-medium" : "font-normal"
-                      )}
-                    >
-                      {option.label}
-                    </span>
-
-                    {/* Check Icon for selected items */}
-                    {isOptionSelected(option) && (
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
-                        <Check className="h-5 w-5" aria-hidden="true" />
+                {/* Use our manual selection check instead of Headless UI's selected state */}
+                {() => {
+                  const selected = isOptionSelected(option);
+                  return (
+                    <>
+                      <span
+                        className={clsx(
+                          "block truncate",
+                          selected ? "font-medium" : "font-normal"
+                        )}
+                      >
+                        {option.label}
                       </span>
-                    )}
-                  </>
-                )}
+
+                      {/* Check Icon for selected items */}
+                      {selected && (
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
+                          <Check className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                      )}
+                    </>
+                  );
+                }}
               </ListboxOption>
             ))}
           </ListboxOptions>
