@@ -150,7 +150,7 @@ export default function Select(props: SelectProps) {
                 className={({ active }) =>
                   clsx(
                     "relative cursor-default select-none py-2 pl-10 pr-4",
-                    active ? "bg-purple-100 text-purple-900" : "text-gray-900"
+                    active ? "bg-purple-100 text-purple-900" : "text-gray-800"
                   )
                 }
               >
