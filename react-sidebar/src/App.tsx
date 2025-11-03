@@ -25,11 +25,6 @@ function Contact() {
 function App() {
   const [selected, setSelected] = useState<OptionProps[]>([]);
 
-  const options: OptionProps[] = [
-    { value: "1", label: "Option 1" },
-    { value: "2", label: "Option 2" },
-    { value: "3", label: "Option 3" },
-  ];
   return (
     <div className="flex h-screen">
       {/* Sidebar always visible on the left */}
@@ -51,15 +46,18 @@ function App() {
           <TextField multiline errorMessage="اشتباه" />
 
           <Select
-            options={[
-              { value: "1", label: "Option 1" },
-              { value: "2", label: "Option 2" },
-              { value: "3", label: "Option 3" },
-            ]}
             multiple={true}
+            showSelectAll={true}
+            selectAllText="همه" // ← Custom text
+            deselectAllText="لغو همه" // ← Custom text
+            options={[
+              { value: "1", label: "گزینه ۱" },
+              { value: "2", label: "گزینه ۲" },
+              { value: "3", label: "گزینه ۳" },
+            ]}
             value={selected}
             onChange={setSelected}
-            label="تست"
+            label="انتخاب شما"
           />
         </div>
 

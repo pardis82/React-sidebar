@@ -31,10 +31,22 @@ type SelectProps = {
   label?: string;
   erroMessage?: string;
   className?: string;
+  showSelectAll?: boolean;
+  selectAllText?: string; // Custom text for "Select All"
+  deselectAllText?: string; // Custom text for "Deselect All"
 } & (SingleSelectProps | MultipleSelectProps);
 
 export default function Select(props: SelectProps) {
-  const { label, options, multiple, erroMessage, className } = props;
+  const {
+    label,
+    options,
+    multiple,
+    erroMessage,
+    className,
+    showSelectAll = false,
+    selectAllText = "Select All", // Default text
+    deselectAllText = "Deselect All", // Default text
+  } = props;
   const generatedId = useId();
   const [isFocused, setIsFocused] = useState(false);
 
@@ -42,23 +54,40 @@ export default function Select(props: SelectProps) {
   const getButtonText = () => {
     if (multiple) {
       const selectedValues = (props.value as OptionProps[]) || [];
-      if (selectedValues.length === 0) return "Please select items";
+      if (selectedValues.length === 0) return "انتخاب کنید";
       if (selectedValues.length === 1) return selectedValues[0].label;
-      return `${selectedValues.length} items selected`;
+      return `${selectedValues.length} آیتم انتخاب شد`;
     }
     const selectedValue = props.value as OptionProps | undefined;
-    return selectedValue?.label || "Please select an item";
+    return selectedValue?.label || "انتخاب کنید";
+  };
+
+  // Check if all options are selected
+  const areAllSelected = () => {
+    if (!multiple) return false;
+    const selectedValues = (props.value as OptionProps[]) || [];
+    return selectedValues.length === options.length;
+  };
+
+  // Handle select all
+  const handleSelectAll = () => {
+    if (!multiple) return;
+
+    if (areAllSelected()) {
+      (props.onChange as (value: OptionProps[]) => void)?.([]);
+    } else {
+      (props.onChange as (value: OptionProps[]) => void)?.(options);
+    }
   };
 
   return (
     <div className="flex flex-col gap-1 w-44">
-      {/* Select container with always-floated label */}
       <div className="relative bg-white rounded-lg">
         <Listbox
           value={props.value}
           onChange={props.onChange as any}
           multiple={multiple}
-          by="value" // ← KEY FIX: Compare by value property instead of reference
+          by="value"
         >
           <ListboxButton
             id={generatedId}
@@ -75,7 +104,6 @@ export default function Select(props: SelectProps) {
               {getButtonText()}
             </span>
 
-            {/* Chevron Down Icon */}
             <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
               <ChevronDown
                 className={clsx(
@@ -87,7 +115,6 @@ export default function Select(props: SelectProps) {
             </span>
           </ListboxButton>
 
-          {/* Dropdown Options */}
           <Transition
             as={Fragment}
             leave="transition ease-in duration-100"
@@ -95,6 +122,32 @@ export default function Select(props: SelectProps) {
             leaveTo="opacity-0"
           >
             <ListboxOptions className="absolute mt-1 w-full max-h-60 overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none z-10">
+              {/* Select All Option with Custom Text */}
+              {multiple && showSelectAll && (
+                <button
+                  type="button"
+                  onClick={handleSelectAll}
+                  className={clsx(
+                    "relative cursor-default select-none py-2 pl-10 pr-4 border-b border-gray-200 w-full text-right",
+                    "hover:bg-purple-100 hover:text-purple-900 text-gray-900"
+                  )}
+                >
+                  <span
+                    className={clsx(
+                      "block truncate font-medium",
+                      areAllSelected() ? "text-purple-600" : "text-gray-900"
+                    )}
+                  >
+                    {areAllSelected() ? deselectAllText : selectAllText}
+                  </span>
+                  {areAllSelected() && (
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
+                      <Check className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                  )}
+                </button>
+              )}
+
               {options.map((option) => (
                 <ListboxOption
                   key={option.value}
@@ -132,7 +185,6 @@ export default function Select(props: SelectProps) {
           </Transition>
         </Listbox>
 
-        {/* Label - ALWAYS at top with floated styling */}
         {label && (
           <label
             htmlFor={generatedId}
@@ -152,7 +204,6 @@ export default function Select(props: SelectProps) {
         )}
       </div>
 
-      {/* Error Message */}
       {erroMessage && (
         <p className="text-red-500 text-sm mt-1">{erroMessage}</p>
       )}
