@@ -26,11 +26,10 @@ export default function TextField({
   name,
   ...props
 }: Props) {
-  // Generate a unique ID
   const generatedId = useId();
-  const inputId = id || generatedId;
+  const inputId = id ?? generatedId;
 
-  const [internalValue, setInternalValue] = useState(defaultValue || "");
+  const [internalValue, setInternalValue] = useState(defaultValue ?? "");
   const [isFocused, setIsFocused] = useState(false);
 
   const actualValue = value !== undefined ? value : internalValue;
@@ -38,12 +37,6 @@ export default function TextField({
 
   const shouldFloatLabel = hasValue || isFocused;
   const shouldShowPlaceholder = isFocused && !hasValue;
-
-  const BaseContainerclass =
-    "border border-gray-300 text-gray-700 text-base rounded-lg block w-full pt-3 pb-3 px-2 bg-transparent focus:outline-none focus:ring-1 focus:ring-purple-500 peer placeholder:delay-90 placeholder:text-sm";
-  const ErrorContainer = "border-red-400 focus:ring-red-500";
-  const NormalLabelClass =
-    "text-sm font-medium text-gray-500 whitespace-nowrap pointer-events-none absolute transition-all duration-300 transform  right-3";
 
   const InputType = multiline ? "textarea" : "input";
 
@@ -59,45 +52,59 @@ export default function TextField({
   };
 
   return (
-    <div className={clsx(containerClassName)}>
-      <div className="relative bg-white rounded-lg">
+    <div className={clsx("relative", containerClassName)}>
+      {/* Fieldset with conditional notch */}
+      <fieldset
+        className={clsx(
+          "relative border rounded-lg px-3 transition-colors  duration-300",
+          // Dynamic padding based on float state
+          shouldFloatLabel ? "pt-4 pb-2" : "py-3",
+          errorMessage
+            ? "border-red-400 focus-within:border-red-500"
+            : "border-gray-300 focus-within:border-purple-500"
+        )}
+      >
+        {/* Legend - Only creates notch when floated */}
+        {label && shouldFloatLabel && (
+          <legend className="px-1 text-xs h-0 overflow-hidden">
+            {/* Invisible text to create notch space */}
+            <span className="opacity-0">{label}</span>
+          </legend>
+        )}
+
         <InputType
           onBlur={() => setIsFocused(false)}
           onFocus={() => setIsFocused(true)}
           onChange={handleChange}
           value={actualValue}
           placeholder={shouldShowPlaceholder ? props.placeholder : " "}
-          id={inputId} // Use the guaranteed ID
-          name={name || inputId} // Use name prop or fallback to ID
+          id={inputId}
+          name={name ?? inputId}
           className={clsx(
-            BaseContainerclass,
-            errorMessage && ErrorContainer,
-            !shouldShowPlaceholder && "placeholder-transparent",
+            "peer w-full bg-transparent outline-none text-base placeholder-transparent",
+            errorMessage && "text-red-600",
             className
           )}
           {...props}
         />
+
+        {/* Floating label */}
         {label && (
           <label
-            htmlFor={inputId} // Associate label with the input
+            htmlFor={inputId}
             className={clsx(
-              NormalLabelClass,
+              "absolute right-3 text-gray-500 transition-all duration-300 pointer-events-none px-1",
               shouldFloatLabel
-                ? clsx(
-                    "scale-90 -translate-y-5 top-2 font-normal bg-white px-1",
-                    multiline &&
-                      "scale-90 top-2 -translate-y-5 scale-90 font-normal bg-white px-1",
-                    errorMessage ? "text-red-500" : "text-purple-500"
-                  )
-                : clsx(
-                    "scale-100 -translate-y-1/2 top-1/2 text-gray-500 text-xs font-normal"
-                  )
+                ? "-top-2 text-xs text-purple-500"
+                : "top-1/2 -translate-y-1/2 text-sm",
+              errorMessage ? "text-red-500" : "text-purple-500"
             )}
           >
             {label}
           </label>
         )}
-      </div>
+      </fieldset>
+
       {errorMessage && (
         <p className="text-red-500 text-sm mt-1">{errorMessage}</p>
       )}

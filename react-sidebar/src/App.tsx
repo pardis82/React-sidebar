@@ -24,12 +24,12 @@ function App() {
   const [selected, setSelected] = useState<OptionProps[]>([]);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen ">
       {/* Sidebar always visible on the left */}
       {/* <Sidebar /> */}
 
       {/* Main content area */}
-      <main className="bg-white flex-1 overflow-auto flex  items-center justify-center bg-gray-50">
+      <main className="bg-orange-300 flex-1 overflow-auto flex  items-center justify-center bg-gray-50">
         {/* Centered content */}
         <div className="space-y-6 w-full max-w-md">
           <TextField
@@ -43,6 +43,7 @@ function App() {
           <TextField errorMessage="اشتباه" />
           <TextField multiline errorMessage="اشتباه" />
 
+          <TextField label="رمز عبور" errorMessage="اجباری است" />
           <Select
             multiple={true}
             showSelectAll={true}
@@ -57,8 +58,6 @@ function App() {
             onChange={setSelected}
             label="انتخاب شما"
           />
-
-          <SimpleTooltip content="Hi" />
         </div>
 
         {/* Example: if you later enable routes */}
