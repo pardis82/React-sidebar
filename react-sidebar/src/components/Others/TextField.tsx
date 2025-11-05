@@ -56,7 +56,7 @@ export default function TextField({
       {/* Fieldset with conditional notch */}
       <fieldset
         className={clsx(
-          "relative border rounded-lg px-3 transition-colors  duration-300",
+          "relative border rounded-lg px-3 transition-colors  duration-300 bg-inherit",
           // Dynamic padding based on float state
           shouldFloatLabel ? "pt-4 pb-2" : "py-3",
           errorMessage

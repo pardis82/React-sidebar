@@ -29,7 +29,7 @@ function App() {
       {/* <Sidebar /> */}
 
       {/* Main content area */}
-      <main className="bg-orange-300 flex-1 overflow-auto flex  items-center justify-center bg-gray-50">
+      <main className="bg-white flex-1 overflow-auto flex  items-center justify-center bg-gray-50">
         {/* Centered content */}
         <div className="space-y-6 w-full max-w-md">
           <TextField
