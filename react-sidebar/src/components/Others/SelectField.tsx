@@ -31,7 +31,7 @@ type SelectProps = {
   label?: string;
   erroMessage?: string;
   className?: string;
-  containerClassName?: string; // Add containerClassName to match TextField
+  containerClassName?: string;
   showSelectAll?: boolean;
   selectAllText?: string;
   deselectAllText?: string;
@@ -44,170 +44,210 @@ export default function Select(props: SelectProps) {
     multiple,
     erroMessage,
     className,
-    containerClassName, // Destructure containerClassName
+    containerClassName,
     showSelectAll = false,
     selectAllText = "Select All",
     deselectAllText = "Deselect All",
   } = props;
-  const generatedId = useId();
-  const [isFocused, setIsFocused] = useState(false);
 
-  // Handle display text for both single and multiple modes
+  const generatedId = useId();
+
+  const [isFocused, setIsFocused] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); //  NEW
+
+  // Display text logic (single OR multiple)
   const getButtonText = () => {
     if (multiple) {
-      const selectedValues = (props.value as OptionProps[]) || [];
+      const selectedValues = props.value as OptionProps[];
       if (selectedValues.length === 0) return "انتخاب کنید";
       if (selectedValues.length === 1) return selectedValues[0].label;
       return `${selectedValues.length} آیتم انتخاب شد`;
     }
     const selectedValue = props.value as OptionProps | undefined;
-    return selectedValue?.label || "انتخاب کنید";
+    return selectedValue?.label ?? "انتخاب شد";
   };
 
-  // Check if all options are selected
   const areAllSelected = () => {
     if (!multiple) return false;
-    const selectedValues = (props.value as OptionProps[]) || [];
+    const selectedValues = props.value as OptionProps[];
     return selectedValues.length === options.length;
   };
 
-  // Handle select all
   const handleSelectAll = () => {
     if (!multiple) return;
-
     if (areAllSelected()) {
-      (props.onChange as (value: OptionProps[]) => void)?.([]);
+      (props.onChange as (v: OptionProps[]) => void)?.([]);
     } else {
-      (props.onChange as (value: OptionProps[]) => void)?.(options);
+      (props.onChange as (v: OptionProps[]) => void)?.(options);
     }
   };
 
   return (
-    <div className={clsx("flex flex-col gap-1 w-full", containerClassName)}>
-      {" "}
-      {/* Changed to w-full and added containerClassName */}
-      <div className="relative bg-white rounded-lg">
-        <Listbox
-          value={props.value}
-          onChange={props.onChange as any}
-          multiple={multiple}
-          by="value"
+    <div className={clsx("w-full", containerClassName)}>
+      <div
+        className="relative rounded-lg px-3 py-3"
+        style={{
+          ["--input-bg" as any]: "#ffb866",
+          display: "inline-block",
+        }}
+      >
+        <div
+          className={clsx(
+            "relative rounded-lg px-3 py-3",
+            "bg-[color:var(--input-bg)]"
+          )}
         >
-          <ListboxButton
-            id={generatedId}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+          {/* ✅ MUI-style border + notch */}
+          <fieldset
+            aria-hidden
             className={clsx(
-              "relative w-full cursor-default rounded-lg bg-white pt-5 pb-2 pl-10 pr-3 text-right border focus:outline-none focus:ring-1 text-sm", // Already has w-full
+              "absolute inset-0 pointer-events-none rounded-lg transition-colors",
               erroMessage
-                ? "border-red-300 focus:ring-red-500"
-                : "border-gray-300 focus:ring-purple-500",
-              className // Apply className to the button instead of outer container
+                ? "border border-red-400"
+                : isFocused || isOpen // ✅ keep purple when open
+                ? "border border-purple-600"
+                : "border border-gray-300"
             )}
           >
-            <span className="block truncate text-gray-900">
-              {getButtonText()}
-            </span>
+            <legend className="px-1 h-0 overflow-hidden transition-all duration-150 w-auto">
+              {label && (
+                <span className="text-xs rtl:text-right px-1 opacity-0">
+                  {label}
+                </span>
+              )}
+            </legend>
+          </fieldset>
+          {/* ✅ Permanent label */}
+          {label && (
+            <label
+              htmlFor={generatedId}
+              className={clsx(
+                "absolute px-1 right-2 -top-2 text-xs transition-colors",
+                erroMessage
+                  ? "text-red-500"
+                  : isFocused || isOpen // ✅ keep purple when open
+                  ? "text-purple-600"
+                  : "text-gray-600"
+              )}
+            >
+              {label}
+            </label>
+          )}
 
-            <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
-              <ChevronDown
-                className={clsx(
-                  "h-5 w-5 transition-transform duration-200",
-                  isFocused ? "text-purple-500" : "text-gray-400"
-                )}
-                aria-hidden="true"
-              />
-            </span>
-          </ListboxButton>
-
-          <Transition
-            as={Fragment}
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
+          {/* ✅ SELECT */}
+          <Listbox
+            value={props.value}
+            onChange={props.onChange as any}
+            multiple={multiple}
+            by="value"
           >
-            <ListboxOptions className="absolute mt-1 w-full max-h-60 overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none z-10">
-              {/* Select All Option with Custom Text */}
-              {multiple && showSelectAll && (
-                <button
-                  type="button"
-                  onClick={handleSelectAll}
-                  className={clsx(
-                    "relative cursor-default select-none py-2 pl-10 pr-4 border-b border-gray-200 w-full text-right",
-                    "hover:bg-purple-100 hover:text-purple-900 text-gray-900"
-                  )}
-                >
-                  <span
+            {({ open }) => {
+              // ✅ Sync headless UI open state with our local state
+              if (open !== isOpen) setIsOpen(open);
+
+              return (
+                <>
+                  <ListboxButton
+                    id={generatedId}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
                     className={clsx(
-                      "block truncate font-medium",
-                      areAllSelected() ? "text-purple-600" : "text-gray-900"
+                      "relative w-full cursor-default bg-transparent pt-4 pb-2 pl-10 pr-3 text-right focus:outline-none text-sm",
+                      className
                     )}
                   >
-                    {areAllSelected() ? deselectAllText : selectAllText}
-                  </span>
-                  {areAllSelected() && (
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
-                      <Check className="h-5 w-5" aria-hidden="true" />
+                    <span className="block truncate text-gray-900">
+                      {getButtonText()}
                     </span>
-                  )}
-                </button>
-              )}
 
-              {options.map((option) => (
-                <ListboxOption
-                  key={option.value}
-                  value={option}
-                  className={({ active, selected }) =>
-                    clsx(
-                      "relative cursor-default select-none py-2 pl-10 pr-4",
-                      active
-                        ? "bg-purple-100 text-purple-900"
-                        : "text-gray-900",
-                      selected && "bg-purple-50"
-                    )
-                  }
-                >
-                  {({ selected }) => (
-                    <>
-                      <span
+                    <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
+                      <ChevronDown
                         className={clsx(
-                          "block truncate",
-                          selected ? "font-medium" : "font-normal"
+                          "h-5 w-5 transition-transform duration-200",
+                          isFocused && isOpen
+                            ? "text-purple-500"
+                            : "text-gray-400"
                         )}
-                      >
-                        {option.label}
-                      </span>
-                      {selected && (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
-                          <Check className="h-5 w-5" aria-hidden="true" />
-                        </span>
-                      )}
-                    </>
-                  )}
-                </ListboxOption>
-              ))}
-            </ListboxOptions>
-          </Transition>
-        </Listbox>
+                      />
+                    </span>
+                  </ListboxButton>
 
-        {label && (
-          <label
-            htmlFor={generatedId}
-            className={clsx(
-              "absolute pointer-events-none transition-all duration-300 transform scale-90 -translate-y-5 top-2 font-normal bg-white px-1 right-3 text-sm",
-              isFocused
-                ? erroMessage
-                  ? "text-red-500"
-                  : "text-purple-500"
-                : erroMessage
-                ? "text-red-500"
-                : "text-gray-500"
-            )}
-          >
-            {label}
-          </label>
-        )}
+                  {/* ✅ DROPDOWN */}
+                  <Transition
+                    as={Fragment}
+                    leave="transition ease-in duration-100"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <ListboxOptions className="absolute z-10 mt-3 w-full right-0 overflow-auto rounded-md  py-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
+                      {/* ✅ Select All */}
+                      {multiple && showSelectAll && (
+                        <button
+                          type="button"
+                          onClick={handleSelectAll}
+                          className={clsx(
+                            "relative cursor-default select-none py-2 pl-10 pr-4 border-b border-gray-200 w-full text-right",
+                            "hover:text-purple-900 text-gray-900"
+                          )}
+                        >
+                          <span
+                            className={clsx(
+                              "block truncate font-medium",
+                              areAllSelected()
+                                ? "text-purple-600"
+                                : "text-gray-900"
+                            )}
+                          >
+                            {areAllSelected() ? deselectAllText : selectAllText}
+                          </span>
+                          {areAllSelected() && (
+                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
+                              <Check className="h-5 w-5" />
+                            </span>
+                          )}
+                        </button>
+                      )}
+                      {/* ✅ Regular options */}
+                      {options.map((option) => (
+                        <ListboxOption
+                          key={option.value}
+                          value={option}
+                          className={({ focus, selected }) =>
+                            clsx(
+                              "relative cursor-default select-none py-2 pl-10 pr-4",
+                              focus ? "text-purple-900" : "text-gray-900",
+                              selected && "text-purple-600"
+                            )
+                          }
+                        >
+                          {({ selected }) => (
+                            <>
+                              <span
+                                className={clsx(
+                                  "block truncate",
+                                  selected ? "font-medium" : "font-normal"
+                                )}
+                              >
+                                {option.label}
+                              </span>
+                              {selected && (
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
+                                  <Check className="h-5 w-5" />
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </ListboxOption>
+                      ))}
+                    </ListboxOptions>
+                  </Transition>
+                </>
+              );
+            }}
+          </Listbox>
+        </div>
       </div>
+
       {erroMessage && (
         <p className="text-red-500 text-sm mt-1">{erroMessage}</p>
       )}

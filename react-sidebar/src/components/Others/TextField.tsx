@@ -24,6 +24,7 @@ export default function TextField({
   multiline = false,
   id,
   name,
+  placeholder,
   ...props
 }: Props) {
   const generatedId = useId();
@@ -35,76 +36,98 @@ export default function TextField({
   const actualValue = value !== undefined ? value : internalValue;
   const hasValue = !!actualValue && String(actualValue).length > 0;
 
-  const shouldFloatLabel = hasValue || isFocused;
-  const shouldShowPlaceholder = isFocused && !hasValue;
+  const float = hasValue || isFocused;
 
   const InputType = multiline ? "textarea" : "input";
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    if (value === undefined) {
-      setInternalValue(e.target.value);
-    }
-    if (props.onChange) {
-      props.onChange(e);
-    }
+    if (value === undefined) setInternalValue(e.target.value);
+    props.onChange?.(e);
   };
 
   return (
-    <div className={clsx("relative", containerClassName)}>
-      {/* Fieldset with conditional notch */}
-      <fieldset
+    <div
+      className={clsx("w-full", containerClassName)}
+      style={
+        {
+          ["--input-bg" as any]: "#ffb866",
+          display: "inline-block",
+        } as React.CSSProperties
+      }
+    >
+      {/* Outer wrapper */}
+      <div
         className={clsx(
-          "relative border rounded-lg px-3 transition-colors  duration-300 bg-inherit",
-          // Dynamic padding based on float state
-          shouldFloatLabel ? "pt-4 pb-2" : "py-3",
-          errorMessage
-            ? "border-red-400 focus-within:border-red-500"
-            : "border-gray-300 focus-within:border-purple-500"
+          "relative rounded-lg px-3 py-3",
+          "bg-[color:var(--input-bg)]"
         )}
       >
-        {/* Legend - Only creates notch when floated */}
-        {label && shouldFloatLabel && (
-          <legend className="px-1 text-xs h-0 overflow-hidden">
-            {/* Invisible text to create notch space */}
-            <span className="opacity-0">{label}</span>
-          </legend>
-        )}
+        {/* Fieldset with proper notch implementation */}
+        <fieldset
+          aria-hidden
+          className={clsx(
+            "absolute inset-0 pointer-events-none rounded-lg border transition-colors",
+            errorMessage ? "border-red-400" : "border-gray-300"
+          )}
+        >
+          {/* Legend for the notch */}
+          {label && float && (
+            <legend
+              className={clsx(
+                "h-0 overflow-hidden transition-all duration-150 px-1",
+                float ? "max-w-full" : "max-w-0"
+              )}
+            >
+              {/* Invisible text for layout - this creates the notch */}
+              <span className="text-xs opacity-0 px-1">{label}</span>
+            </legend>
+          )}
+        </fieldset>
 
+        {/* Input / Textarea */}
         <InputType
-          onBlur={() => setIsFocused(false)}
-          onFocus={() => setIsFocused(true)}
-          onChange={handleChange}
-          value={actualValue}
-          placeholder={shouldShowPlaceholder ? props.placeholder : " "}
           id={inputId}
           name={name ?? inputId}
+          value={actualValue}
+          onChange={handleChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          placeholder={float ? placeholder ?? "" : ""}
+          rows={multiline ? minrows ?? 3 : undefined}
           className={clsx(
-            "peer w-full bg-transparent outline-none text-base placeholder-transparent",
+            "w-full bg-transparent outline-none text-base leading-normal pt-1",
             errorMessage && "text-red-600",
             className
           )}
-          {...props}
+          {...(props as any)}
         />
 
-        {/* Floating label */}
+        {/* Label */}
         {label && (
           <label
             htmlFor={inputId}
             className={clsx(
-              "absolute right-3 text-gray-500 transition-all duration-300 pointer-events-none px-1",
-              shouldFloatLabel
-                ? "-top-2 text-xs text-purple-500"
-                : "top-1/2 -translate-y-1/2 text-sm",
-              errorMessage ? "text-red-500" : "text-purple-500"
+              "absolute transition-all duration-150 px-1 pointer-events-none",
+              "right-2",
+              float
+                ? clsx(
+                    "text-xs",
+                    errorMessage
+                      ? "-top-[0.7rem] text-red-500"
+                      : "-top-[0.6rem] text-purple-600"
+                  )
+                : "top-1/2 -translate-y-1/2 text-sm text-gray-600"
             )}
+            style={{ background: "transparent" }}
           >
             {label}
           </label>
         )}
-      </fieldset>
+      </div>
 
+      {/* Error message */}
       {errorMessage && (
         <p className="text-red-500 text-sm mt-1">{errorMessage}</p>
       )}
