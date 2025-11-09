@@ -124,7 +124,17 @@ export default function TextField({
           placeholder={float ? placeholder ?? "" : ""}
           rows={multiline ? minrows ?? 3 : undefined}
           className={clsx(
-            "w-full bg-transparent outline-none text-base leading-normal pt-1",
+            "w-full bg-transparent outline-none text-base leading-normal  text-right ",
+            !multiline && [
+              // 1. Truncate for the actual input value
+              "truncate",
+
+              // 2. Encapsulated fixes for placeholder truncation (Arbitrary values)
+              "placeholder:[text-overflow:ellipsis]",
+
+              // 3. Optional: Fix for IE/Edge (Uses the standard -ms- prefix)
+              "placeholder-ms-input:[text-overflow:ellipsis]",
+            ],
             errorMessage && "text-red-600",
             className
           )}

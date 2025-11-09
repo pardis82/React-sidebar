@@ -85,15 +85,16 @@ export default function Select(props: SelectProps) {
   return (
     <div className={clsx("w-full", containerClassName)}>
       <div
-        className="relative rounded-lg px-3 py-3"
-        style={{
-          ["--input-bg" as any]: "#ffb866",
-          
-        }}
+        className="relative rounded-lg"
+        style={
+          {
+            ["--input-bg" as any]: "#ffb866",
+          } as React.CSSProperties
+        }
       >
         <div
           className={clsx(
-            "relative rounded-lg px-3 py-3",
+            "relative rounded-lg px-3 pt-1",
             "bg-[color:var(--input-bg)]"
           )}
         >
@@ -152,7 +153,7 @@ export default function Select(props: SelectProps) {
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     className={clsx(
-                      "relative w-full cursor-default bg-transparent pt-4 pb-2 pl-10 pr-3 text-right focus:outline-none text-sm",
+                      "relative w-full cursor-default bg-transparent py-3 pl-10 pr-3 text-right focus:outline-none text-sm",
                       className
                     )}
                   >
@@ -186,7 +187,7 @@ export default function Select(props: SelectProps) {
                           type="button"
                           onClick={handleSelectAll}
                           className={clsx(
-                            "relative cursor-default select-none py-2 pl-10 pr-4 border-b border-gray-200 w-full text-right",
+                            "relative cursor-default select-none py-2 px-2 border-b border-gray-200 w-full text-right",
                             "hover:text-purple-900 text-gray-900"
                           )}
                         >
@@ -201,7 +202,7 @@ export default function Select(props: SelectProps) {
                             {areAllSelected() ? deselectAllText : selectAllText}
                           </span>
                           {areAllSelected() && (
-                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
+                            <span className="absolute inset-y-0 left-0 flex items-center pl-1 text-purple-600">
                               <Check className="h-5 w-5" />
                             </span>
                           )}
@@ -214,7 +215,7 @@ export default function Select(props: SelectProps) {
                           value={option}
                           className={({ focus, selected }) =>
                             clsx(
-                              "relative cursor-default select-none py-2 pl-10 pr-4",
+                              "relative cursor-default select-none py-2 px-2",
                               focus ? "text-purple-900" : "text-gray-900",
                               selected && "text-purple-600"
                             )
@@ -231,7 +232,7 @@ export default function Select(props: SelectProps) {
                                 {option.label}
                               </span>
                               {selected && (
-                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-1 text-purple-600">
                                   <Check className="h-5 w-5" />
                                 </span>
                               )}
