@@ -88,7 +88,7 @@ export default function Select(props: SelectProps) {
         className="relative rounded-lg px-3 py-3"
         style={{
           ["--input-bg" as any]: "#ffb866",
-          display: "inline-block",
+          
         }}
       >
         <div
