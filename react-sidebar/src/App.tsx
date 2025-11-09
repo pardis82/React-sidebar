@@ -31,19 +31,19 @@ function App() {
       {/* Main content area */}
       <main className="bg-red-300 flex-1 overflow-auto flex  items-center justify-center bg-gray-50">
         {/* Centered content */}
-        <div className="space-y-6 w-full max-w-md">
+        <div className="mt-40 space-y-6 w-full max-w-md">
           <TextField
             label="نام"
             multiline
-            minrows={5}
+            minrows={2}
             maxrows={10}
             defaultValue="پردیس"
           />
-          <TextField label="نام" placeholder="نام خود را وارد کنید" />
+          <TextField label="نام" placeholder="نام خود را وارد کنید"  helperText="نام باید حداقل 3 حرف باشد"/>
           <TextField errorMessage="اشتباه" />
           <TextField multiline errorMessage="اشتباه" />
 
-          <TextField label="رمز عبور" errorMessage="اجباری است" />
+          <TextField label="رمز عبور" errorMessage="اجباری است"  helperText="رمز باید حداقل 8 کاراکتر باشد"/>
           <Select
             multiple={true}
             showSelectAll={true}

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState, type InputHTMLAttributes, useId } from "react";
+import {useEffect,useRef, useState, type InputHTMLAttributes, useId } from "react";
 
 interface Props
   extends InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
@@ -10,10 +10,12 @@ interface Props
   multiline?: boolean;
   maxrows?: number;
   defaultValue?: string;
+  helperText?: string
 }
 
 export default function TextField({
   label,
+  helperText,
   errorMessage,
   className,
   containerClassName,
@@ -27,6 +29,25 @@ export default function TextField({
   placeholder,
   ...props
 }: Props) {
+
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const adjustHeight = () => {
+    if (!textAreaRef.current) return;
+
+    const ta = textAreaRef.current;
+
+    ta.style.height = "auto";
+
+    const lineHeight = parseInt(getComputedStyle(ta).lineHeight);
+    const maxHeight = (maxrows ?? 10) * lineHeight;
+    const minHeight = (minrows ?? 3) * lineHeight;
+
+    const newHeight = Math.min(Math.max(ta.scrollHeight, minHeight), maxHeight);
+
+    ta.style.height = newHeight + "px";
+  };
+
   const generatedId = useId();
   const inputId = id ?? generatedId;
 
@@ -46,6 +67,11 @@ export default function TextField({
     if (value === undefined) setInternalValue(e.target.value);
     props.onChange?.(e);
   };
+
+  useEffect(() => {
+    if (multiline) adjustHeight();
+  }, [actualValue, isFocused]);
+
 
   return (
     <div
@@ -88,6 +114,7 @@ export default function TextField({
 
         {/* Input / Textarea */}
         <InputType
+          ref={multiline ? textAreaRef : undefined}
           id={inputId}
           name={name ?? inputId}
           value={actualValue}
@@ -128,9 +155,11 @@ export default function TextField({
       </div>
 
       {/* Error message */}
-      {errorMessage && (
+      {errorMessage ? (
         <p className="text-red-500 text-sm mt-1">{errorMessage}</p>
-      )}
+      ) : helperText ? (
+        <p className="text-gray-500 text-xs mt-1">{helperText}</p>
+      ) : null}
     </div>
   );
 }
