@@ -1,4 +1,5 @@
-import { useId, Fragment, useState } from "react";
+import { useId, Fragment, useState , useEffect } from "react";
+import { CiSearch } from "react-icons/ci";
 import { clsx } from "clsx";
 import {
   Listbox,
@@ -35,6 +36,7 @@ type SelectProps = {
   showSelectAll?: boolean;
   selectAllText?: string;
   deselectAllText?: string;
+  searchable?: boolean;
 } & (SingleSelectProps | MultipleSelectProps);
 
 export default function Select(props: SelectProps) {
@@ -48,8 +50,9 @@ export default function Select(props: SelectProps) {
     showSelectAll = false,
     selectAllText = "Select All",
     deselectAllText = "Deselect All",
+    searchable=false,
   } = props;
-
+const [query, setQuery] = useState("");
   const generatedId = useId();
 
   const [isFocused, setIsFocused] = useState(false);
@@ -81,7 +84,17 @@ export default function Select(props: SelectProps) {
       (props.onChange as (v: OptionProps[]) => void)?.(options);
     }
   };
+const filteredOptions = searchable
+  ? options.filter((opt) =>
+      opt.label.toLowerCase().includes(query.toLowerCase())
+    )
+  : options;
 
+  useEffect(() => {
+    if (!isOpen && searchable) {
+      setQuery("");
+    }
+  }, [isOpen, searchable]);
   return (
     <div className={clsx("w-full", containerClassName)}>
       <div
@@ -144,7 +157,9 @@ export default function Select(props: SelectProps) {
           >
             {({ open }) => {
               // ✅ Sync headless UI open state with our local state
-              if (open !== isOpen) setIsOpen(open);
+              if (open !== isOpen) {
+                setIsOpen(open);
+              }
 
               return (
                 <>
@@ -180,66 +195,93 @@ export default function Select(props: SelectProps) {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <ListboxOptions className="absolute z-10 mt-3 w-full right-0 overflow-auto rounded-md  py-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
+                    <ListboxOptions className="absolute z-10 mt-3 w-full right-0 overflow-auto rounded-md  py-1 shadow-lg bg-white focus:outline-none">
+                      {/* ✅ SEARCH FIELD */}
+                      {searchable && (
+                        <div className="px-2 pb-1 bg-white sticky top-0 ">
+                          <div className="relative">
+                            <CiSearch className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                            <input
+                              type="text"
+                              value={query}
+                              onChange={(e) => setQuery(e.target.value)}
+                              placeholder="جستجو..."
+                              className="w-full border border-gray-300 rounded-md px-5 py-2 text-sm focus:ring-1 focus:border-purple-500 focus:outline-none focus:ring-purple-500"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {filteredOptions.length === 0 && (
+                        <div className="px-3 py-2 text-gray-500 text-sm text-center">
+                          نتیجه‌ای یافت نشد
+                        </div>
+                      )}
                       {/* ✅ Select All */}
-                      {multiple && showSelectAll && (
-                        <button
-                          type="button"
-                          onClick={handleSelectAll}
-                          className={clsx(
-                            "relative cursor-default select-none py-2 px-2 border-b border-gray-200 w-full text-right",
-                            "hover:text-purple-900 text-gray-900"
-                          )}
-                        >
-                          <span
+                      {multiple &&
+                        showSelectAll &&
+                        filteredOptions.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={handleSelectAll}
                             className={clsx(
-                              "block truncate font-medium",
-                              areAllSelected()
-                                ? "text-purple-600"
-                                : "text-gray-900"
+                              "relative cursor-default select-none py-2 px-2 border-b border-gray-200 w-full text-right",
+                              "hover:text-purple-900 text-gray-900"
                             )}
                           >
-                            {areAllSelected() ? deselectAllText : selectAllText}
-                          </span>
-                          {areAllSelected() && (
-                            <span className="absolute inset-y-0 left-0 flex items-center pl-1 text-purple-600">
-                              <Check className="h-5 w-5" />
-                            </span>
-                          )}
-                        </button>
-                      )}
-                      {/* ✅ Regular options */}
-                      {options.map((option) => (
-                        <ListboxOption
-                          key={option.value}
-                          value={option}
-                          className={({ focus, selected }) =>
-                            clsx(
-                              "relative cursor-default select-none py-2 px-2",
-                              focus ? "text-purple-900" : "text-gray-900",
-                              selected && "text-purple-600"
-                            )
-                          }
-                        >
-                          {({ selected }) => (
-                            <>
-                              <span
-                                className={clsx(
-                                  "block truncate",
-                                  selected ? "font-medium" : "font-normal"
-                                )}
-                              >
-                                {option.label}
-                              </span>
-                              {selected && (
-                                <span className="absolute inset-y-0 left-0 flex items-center pl-1 text-purple-600">
-                                  <Check className="h-5 w-5" />
-                                </span>
+                            <span
+                              className={clsx(
+                                "block truncate font-medium",
+                                areAllSelected()
+                                  ? "text-purple-600"
+                                  : "text-gray-900"
                               )}
-                            </>
-                          )}
-                        </ListboxOption>
-                      ))}
+                            >
+                              {areAllSelected()
+                                ? deselectAllText
+                                : selectAllText}
+                            </span>
+                            {areAllSelected() && (
+                              <span className="absolute inset-y-0 left-0 flex items-center pl-1 text-purple-600">
+                                <Check className="h-5 w-5" />
+                              </span>
+                            )}
+                          </button>
+                        )}
+                      {/* ✅ Regular options */}
+                      {(filteredOptions.length > 0 ? filteredOptions : []).map(
+                        (option) => (
+                          <ListboxOption
+                            key={option.value}
+                            value={option}
+                            className={({ focus, selected }) =>
+                              clsx(
+                                "relative cursor-default select-none py-2 px-2",
+                                focus ? "text-purple-900" : "text-gray-900",
+                                selected && "text-purple-600"
+                              )
+                            }
+                          >
+                            {({ selected }) => (
+                              <>
+                                <span
+                                  className={clsx(
+                                    "block truncate",
+                                    selected ? "font-medium" : "font-normal"
+                                  )}
+                                >
+                                  {option.label}
+                                </span>
+                                {selected && (
+                                  <span className="absolute inset-y-0 left-0 flex items-center pl-1 text-purple-600">
+                                    <Check className="h-5 w-5" />
+                                  </span>
+                                )}
+                              </>
+                            )}
+                          </ListboxOption>
+                        )
+                      )}
                     </ListboxOptions>
                   </Transition>
                 </>

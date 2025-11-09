@@ -102,6 +102,7 @@ function App() {
             <TextField label="کد ملی" />
             <TextField label="سن" />
             <Select
+              searchable={true}
               multiple={true}
               showSelectAll={true}
               selectAllText="همه" // ← Custom text
@@ -110,6 +111,10 @@ function App() {
               options={[
                 { value: "ir", label: "Iran" },
                 { value: "de", label: "Germany" },
+                { value: "it", label: "Italy" },
+                { value: "gh", label: "Ghana" },
+                { value: "kr", label: "Korea" },
+    
               ]}
               value={selectedCounties}
               onChange={setSelectedCountires}
