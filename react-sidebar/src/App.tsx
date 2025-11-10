@@ -22,8 +22,8 @@ function Contact() {
 
 function App() {
   const [selected, setSelected] = useState<OptionProps[]>([]);
-  const [selectedCounties , setSelectedCountires] = useState<OptionProps[]>([])
-  const [selectedLevel , setSelectedLevel] = useState<OptionProps[]> ([])
+  const [selectedCounties, setSelectedCountires] = useState<OptionProps[]>([]);
+  const [selectedLevel, setSelectedLevel] = useState<OptionProps[]>([]);
 
   return (
     <div className="flex h-screen ">
@@ -67,6 +67,10 @@ function App() {
             value={selected}
             onChange={setSelected}
             label="انتخاب شما"
+          />
+          <TextField
+            label="رمز عبور"
+            helperText="رمز باید حداقل 8 کاراکتر باشد"
           />
         </div>
         <div className="mr-10 mt-20 p-4 border rounded-lg bg-white">
@@ -114,7 +118,6 @@ function App() {
                 { value: "it", label: "Italy" },
                 { value: "gh", label: "Ghana" },
                 { value: "kr", label: "Korea" },
-    
               ]}
               value={selectedCounties}
               onChange={setSelectedCountires}

@@ -1,4 +1,4 @@
-import { useId, Fragment, useState , useEffect } from "react";
+import { useId, Fragment, useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { clsx } from "clsx";
 import {
@@ -50,9 +50,9 @@ export default function Select(props: SelectProps) {
     showSelectAll = false,
     selectAllText = "Select All",
     deselectAllText = "Deselect All",
-    searchable=false,
+    searchable = false,
   } = props;
-const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("");
   const generatedId = useId();
 
   const [isFocused, setIsFocused] = useState(false);
@@ -84,11 +84,11 @@ const [query, setQuery] = useState("");
       (props.onChange as (v: OptionProps[]) => void)?.(options);
     }
   };
-const filteredOptions = searchable
-  ? options.filter((opt) =>
-      opt.label.toLowerCase().includes(query.toLowerCase())
-    )
-  : options;
+  const filteredOptions = searchable
+    ? options.filter((opt) =>
+        opt.label.toLowerCase().includes(query.toLowerCase())
+      )
+    : options;
 
   useEffect(() => {
     if (!isOpen && searchable) {
@@ -172,7 +172,7 @@ const filteredOptions = searchable
                       className
                     )}
                   >
-                    <span className="block truncate text-gray-900">
+                    <span className="block truncate text-gray-800">
                       {getButtonText()}
                     </span>
 

@@ -1,5 +1,11 @@
 import clsx from "clsx";
-import {useEffect,useRef, useState, type InputHTMLAttributes, useId } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type InputHTMLAttributes,
+  useId,
+} from "react";
 
 interface Props
   extends InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
@@ -10,7 +16,7 @@ interface Props
   multiline?: boolean;
   maxrows?: number;
   defaultValue?: string;
-  helperText?: string
+  helperText?: string;
 }
 
 export default function TextField({
@@ -29,7 +35,6 @@ export default function TextField({
   placeholder,
   ...props
 }: Props) {
-
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const adjustHeight = () => {
@@ -71,7 +76,6 @@ export default function TextField({
   useEffect(() => {
     if (multiline) adjustHeight();
   }, [actualValue, isFocused]);
-
 
   return (
     <div
@@ -126,15 +130,11 @@ export default function TextField({
           className={clsx(
             "w-full bg-transparent outline-none text-base leading-normal  text-right ",
             !multiline && [
-              // 1. Truncate for the actual input value
-              "truncate",
-
-              // 2. Encapsulated fixes for placeholder truncation (Arbitrary values)
-              "placeholder:[text-overflow:ellipsis]",
-
-              // 3. Optional: Fix for IE/Edge (Uses the standard -ms- prefix)
-              "placeholder-ms-input:[text-overflow:ellipsis]",
+              "truncate", // handles overflow + whitespace-nowrap + ellipsis
+              "overflow-hidden", // ensures placeholder can overflow
+              "text-ellipsis", // explicit ellipsis
             ],
+            "placeholder:truncate placeholder:overflow-hidden placeholder:text-ellipsis",
             errorMessage && "text-red-600",
             className
           )}
