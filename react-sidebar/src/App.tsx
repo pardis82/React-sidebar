@@ -105,7 +105,7 @@ function App() {
             />
           </div>
         </div>
-        <div className="mr-10 mt-10 p-4 border rounded-lg bg-white ">
+        <div className="mr-10 mt-10 p-4 border rounded-lg bg-gray-300 ">
           <p className="text-sm mb-3 text-gray-700">Grid test 3 columns</p>
           <div className=" grid grid-cols-3 gap-4">
             <TextField label="کد ملی" />
