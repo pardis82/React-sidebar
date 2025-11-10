@@ -24,6 +24,7 @@ function App() {
   const [selected, setSelected] = useState<OptionProps[]>([]);
   const [selectedCounties, setSelectedCountires] = useState<OptionProps[]>([]);
   const [selectedLevel, setSelectedLevel] = useState<OptionProps[]>([]);
+  const [selectedNewLevel, setSelectedNewLevel] = useState<OptionProps>();
 
   return (
     <div className="flex h-screen ">
@@ -103,6 +104,17 @@ function App() {
               value={selectedLevel}
               onChange={setSelectedLevel}
             />
+            <Select
+              multiple={false}
+              label="سطح"
+              options={[
+                { value: 1, label: "A1" },
+                { value: 2, label: "A2" },
+                { value: 3, label: "B1" },
+              ]}
+              value={selectedNewLevel}
+              onChange={setSelectedNewLevel}
+            />
           </div>
         </div>
         <div className="mr-10 mt-10 p-4 border rounded-lg bg-gray-300 ">
@@ -118,11 +130,11 @@ function App() {
               deselectAllText="لغو همه" // ← Custom text
               label="کشور"
               options={[
-                { value: "ir", label: "Iran" },
-                { value: "de", label: "Germany" },
-                { value: "it", label: "Italy" },
-                { value: "gh", label: "Ghana" },
-                { value: "kr", label: "Korea" },
+                { value: "ir", label: "ایران" },
+                { value: "de", label: "آلمان" },
+                { value: "it", label: "ایتالیا" },
+                { value: "gh", label: "غنا" },
+                { value: "kr", label: "کره جنوبی" },
               ]}
               value={selectedCounties}
               onChange={setSelectedCountires}

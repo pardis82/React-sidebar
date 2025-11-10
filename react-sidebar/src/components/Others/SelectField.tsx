@@ -101,7 +101,7 @@ export default function Select(props: SelectProps) {
         className="relative rounded-lg"
         style={
           {
-            ["--input-bg" as any]: "#ffb866",
+            ["--input-bg" as any]: "oklch(92.3% 0.003 48.717)",
           } as React.CSSProperties
         }
       >
@@ -195,10 +195,10 @@ export default function Select(props: SelectProps) {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <ListboxOptions className="absolute z-10 mt-3 w-full right-0 overflow-auto rounded-md  py-1 shadow-lg bg-white focus:outline-none">
+                    <ListboxOptions className="absolute z-10 mt-1 w-full right-0 overflow-auto rounded-md  py-1 shadow-lg bg-stone-200 focus:outline-none border border-purple-600">
                       {/* ✅ SEARCH FIELD */}
                       {searchable && (
-                        <div className="px-1 pb-1 bg-white sticky top-0 font-[YekanBakh] ">
+                        <div className="px-1 pb-1 bg-stone-200 sticky top-0 font-[YekanBakh] ">
                           <div className="relative">
                             <CiSearch className="absolute transform rotate-360 right-1 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                             <input
@@ -225,7 +225,7 @@ export default function Select(props: SelectProps) {
                             type="button"
                             onClick={handleSelectAll}
                             className={clsx(
-                              "relative cursor-default select-none py-2 px-5 border-b border-gray-200 w-full text-right font-[YekanBakh]",
+                              "relative cursor-default select-none py-2 px-5 border-b border-gray-300 w-full text-right font-[YekanBakh]",
                               "hover:text-purple-600 text-gray-900"
                             )}
                           >

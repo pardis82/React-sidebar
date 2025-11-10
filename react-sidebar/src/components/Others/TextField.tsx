@@ -82,7 +82,7 @@ export default function TextField({
       className={clsx("w-full", containerClassName)}
       style={
         {
-          ["--input-bg" as any]: "#ffb866",
+          ["--input-bg" as any]: "oklch(92.3% 0.003 48.717)",
           display: "inline-block",
         } as React.CSSProperties
       }
