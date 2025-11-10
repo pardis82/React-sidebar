@@ -82,6 +82,11 @@ function App() {
               helperText="نام باید حداقل 3 حرف باشد"
             />
             <TextField label="نام خانوادگی" />
+            <TextField
+              label="رمز عبور"
+              errorMessage="اجباری است"
+              helperText="رمز باید حداقل 8 کاراکتر باشد"
+            />
 
             <TextField label="ایمیل" />
             <Select

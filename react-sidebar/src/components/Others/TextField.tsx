@@ -99,7 +99,11 @@ export default function TextField({
           aria-hidden
           className={clsx(
             "absolute inset-0 pointer-events-none rounded-lg border transition-colors",
-            errorMessage ? "border-red-400" : "border-gray-300"
+            errorMessage
+              ? "border-red-400"
+              : isFocused
+              ? "border-purple-500"
+              : "border-gray-300"
           )}
         >
           {/* Legend for the notch */}
@@ -125,19 +129,20 @@ export default function TextField({
           onChange={handleChange}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder={float ? placeholder ?? "" : ""}
           rows={multiline ? minrows ?? 3 : undefined}
           className={clsx(
             "w-full bg-transparent outline-none text-base leading-normal  text-right ",
-            !multiline && [
-              "truncate", // handles overflow + whitespace-nowrap + ellipsis
-              "overflow-hidden", // ensures placeholder can overflow
-              "text-ellipsis", // explicit ellipsis
-            ],
-            "placeholder:truncate placeholder:overflow-hidden placeholder:text-ellipsis",
+
             errorMessage && "text-red-600",
             className
           )}
+          placeholder={
+            float && placeholder
+              ? placeholder.length > 20
+                ? placeholder.substring(0, 20) + "..."
+                : placeholder
+              : ""
+          }
           {...(props as any)}
         />
 
