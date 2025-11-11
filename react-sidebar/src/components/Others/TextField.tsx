@@ -131,7 +131,7 @@ export default function TextField({
           onBlur={() => setIsFocused(false)}
           rows={multiline ? minrows ?? 3 : undefined}
           className={clsx(
-            "w-full bg-transparent outline-none text-[14.5px] leading-normal font-[YekanBakh] text-right ",
+            "w-full bg-transparent outline-none text-[14.5px] leading-normal font-sans text-right ",
 
             errorMessage && "text-red-600",
             className
@@ -151,7 +151,7 @@ export default function TextField({
           <label
             htmlFor={inputId}
             className={clsx(
-              "absolute transition-all duration-150 px-1 font-[YekanBakh] pointer-events-none",
+              "absolute transition-all duration-150 px-1 font-sans pointer-events-none",
               "right-2",
               float
                 ? clsx(
@@ -171,13 +171,9 @@ export default function TextField({
 
       {/* Error message */}
       {errorMessage ? (
-        <p className="text-red-500 font-[YekanBakh] text-sm mt-1">
-          {errorMessage}
-        </p>
+        <p className="text-red-500 font-sans text-sm mt-1">{errorMessage}</p>
       ) : helperText ? (
-        <p className="text-gray-500 font-[YekanBakh] text-sm mt-1">
-          {helperText}
-        </p>
+        <p className="text-gray-500 font-sans text-sm mt-1">{helperText}</p>
       ) : null}
     </div>
   );
