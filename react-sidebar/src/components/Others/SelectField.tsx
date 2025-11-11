@@ -225,7 +225,7 @@ export default function Select(props: SelectProps) {
                             type="button"
                             onClick={handleSelectAll}
                             className={clsx(
-                              "relative cursor-default select-none py-2 px-5 border-b border-gray-300 w-full text-right font-[YekanBakh]",
+                              "relative cursor-default select-none py-2 px-3 border-b border-gray-300 w-full text-right font-[YekanBakh]",
                               "hover:text-purple-600 text-gray-900"
                             )}
                           >
@@ -248,6 +248,7 @@ export default function Select(props: SelectProps) {
                             )}
                           </button>
                         )}
+
                       {/* ✅ Regular options */}
                       {(filteredOptions.length > 0 ? filteredOptions : []).map(
                         (option) => (
@@ -256,28 +257,39 @@ export default function Select(props: SelectProps) {
                             value={option}
                             className={({ focus, selected }) =>
                               clsx(
-                                "relative cursor-default select-none py-2 px-5 font-[YekanBakh]",
-                                focus ? "text-purple-600" : "text-gray-900",
-                                selected && "text-purple-600"
+                                "relative cursor-default select-none py-2 px-3 font-[YekanBakh]",
+                                focus ? "text-purple-600 " : "text-gray-900",
+                                selected && "text-purple-600 "
                               )
                             }
                           >
                             {({ selected }) => (
-                              <>
+                              <div className="flex items-center justify-between">
+                                {/* Option label */}
                                 <span
                                   className={clsx(
-                                    "block truncate",
+                                    "block truncate ",
                                     selected ? "font-medium" : "font-normal"
                                   )}
                                 >
                                   {option.label}
                                 </span>
-                                {selected && (
-                                  <span className="absolute inset-y-0 left-2 flex items-center pl-1 text-purple-600">
-                                    <Check className="h-5 w-5" />
-                                  </span>
+                                {/* Checkbox */}
+                                {multiple && (
+                                  <div
+                                    className={clsx(
+                                      "flex items-center justify-center w-5 h-5 border-2 rounded ",
+                                      selected
+                                        ? "bg-purple-600 border-purple-600"
+                                        : "border-gray-300 "
+                                    )}
+                                  >
+                                    {selected && (
+                                      <Check className="h-3 w-3 text-white" />
+                                    )}
+                                  </div>
                                 )}
-                              </>
+                              </div>
                             )}
                           </ListboxOption>
                         )
