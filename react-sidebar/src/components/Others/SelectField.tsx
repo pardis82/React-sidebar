@@ -136,7 +136,7 @@ export default function Select(props: SelectProps) {
             <label
               htmlFor={generatedId}
               className={clsx(
-                "absolute px-1 right-2 -top-2 text-[14.5px] font-[YekanBakh] transition-colors",
+                "absolute px-1 right-2 -top-2 text-[14.5px] font-sans transition-colors",
                 erroMessage
                   ? "text-red-500"
                   : isFocused || isOpen // ✅ keep purple when open
@@ -172,7 +172,7 @@ export default function Select(props: SelectProps) {
                       className
                     )}
                   >
-                    <span className="block truncate text-gray-800 font-[YekanBakh]">
+                    <span className="block truncate text-gray-800 font-sans">
                       {getButtonText()}
                     </span>
 
@@ -198,7 +198,7 @@ export default function Select(props: SelectProps) {
                     <ListboxOptions className="absolute z-10 mt-1 w-full right-0 overflow-auto rounded-md  py-1 shadow-lg bg-stone-200 focus:outline-none border border-purple-600">
                       {/* ✅ SEARCH FIELD */}
                       {searchable && (
-                        <div className="px-1 pb-1 bg-stone-200 sticky top-0 font-[YekanBakh] ">
+                        <div className="px-1 pb-1 bg-stone-200 sticky top-0 font-sans ">
                           <div className="relative">
                             <CiSearch className="absolute transform rotate-360 right-1 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                             <input
@@ -213,7 +213,7 @@ export default function Select(props: SelectProps) {
                       )}
 
                       {filteredOptions.length === 0 && (
-                        <div className="px-3 py-2 text-gray-500 text-sm text-center font-[YekanBakh]">
+                        <div className="px-3 py-2 text-gray-500 text-sm text-center font-sans">
                           نتیجه‌ای یافت نشد
                         </div>
                       )}
@@ -225,7 +225,7 @@ export default function Select(props: SelectProps) {
                             type="button"
                             onClick={handleSelectAll}
                             className={clsx(
-                              "relative cursor-default select-none py-2 px-3 border-b border-gray-300 w-full text-right font-[YekanBakh]",
+                              "relative cursor-default select-none py-2 px-3 border-b border-gray-300 w-full text-right font-sans",
                               "hover:text-purple-600 text-gray-900"
                             )}
                           >
@@ -257,7 +257,7 @@ export default function Select(props: SelectProps) {
                             value={option}
                             className={({ focus, selected }) =>
                               clsx(
-                                "relative cursor-default select-none py-2 px-3 font-[YekanBakh]",
+                                "relative cursor-default select-none py-2 px-3 font-sans",
                                 focus ? "text-purple-600 " : "text-gray-900",
                                 selected && "text-purple-600 "
                               )
