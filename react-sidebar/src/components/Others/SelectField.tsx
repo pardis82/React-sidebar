@@ -136,7 +136,7 @@ export default function Select(props: SelectProps) {
             <label
               htmlFor={generatedId}
               className={clsx(
-                "absolute px-1 right-2 -top-2 text-[14.5px] font-sans transition-colors",
+                "absolute px-1 right-2 -top-2 text-xs font-sans transition-colors",
                 erroMessage
                   ? "text-red-500"
                   : isFocused || isOpen // ✅ keep purple when open
@@ -168,7 +168,7 @@ export default function Select(props: SelectProps) {
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     className={clsx(
-                      "relative w-full cursor-default bg-transparent py-3 pl-10 pr-1 text-right focus:outline-none text-sm",
+                      "relative w-full cursor-default bg-transparent py-3 pl-10 pr-1 text-right focus:outline-none text-xs",
                       className
                     )}
                   >
@@ -225,7 +225,7 @@ export default function Select(props: SelectProps) {
                             type="button"
                             onClick={handleSelectAll}
                             className={clsx(
-                              "relative cursor-default select-none py-2 px-3 border-b border-gray-300 w-full text-right font-sans",
+                              "relative cursor-default select-none py-2 px-3 border-b border-gray-300 w-full text-[13px] text-right font-sans",
                               "hover:text-purple-600 text-gray-900"
                             )}
                           >
@@ -257,7 +257,7 @@ export default function Select(props: SelectProps) {
                             value={option}
                             className={({ focus, selected }) =>
                               clsx(
-                                "relative cursor-default select-none py-2 px-3 font-sans",
+                                "relative cursor-default select-none py-2 px-3 text-sm font-sans",
                                 focus ? "text-purple-600 " : "text-gray-900",
                                 selected && "text-purple-600 "
                               )
