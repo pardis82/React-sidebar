@@ -110,12 +110,19 @@ export default function TextField({
           {label && float && (
             <legend
               className={clsx(
-                "h-0 overflow-hidden transition-all duration-150 px-1",
+                "h-0 overflow-hidden transition-all duration-150 pl-2",
                 float ? "max-w-full" : "max-w-0"
               )}
             >
               {/* Invisible text for layout - this creates the notch */}
-              <span className="text-xs opacity-0 px-1">{label}</span>
+              <span
+                className="text-xs opacity-0 px-1 inline-block whitespace-nowrap"
+                style={{
+                  maxWidth: "calc(100% - 8px)", // Prevents overflow
+                }}
+              >
+                {label}
+              </span>
             </legend>
           )}
         </fieldset>
@@ -160,7 +167,7 @@ export default function TextField({
                       ? "-top-[0.7rem] text-red-500"
                       : "-top-[0.7rem] text-purple-600"
                   )
-                : "top-1/2 -translate-y-1/2 text-sm text-gray-600"
+                : "top-1/2 -translate-y-1/2 text-[11.5px] text-gray-600"
             )}
             style={{ background: "transparent" }}
           >

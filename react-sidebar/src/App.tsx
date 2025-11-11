@@ -90,6 +90,24 @@ function App() {
             />
 
             <TextField label="ایمیل" />
+
+            <Select
+              searchable={true}
+              multiple={true}
+              showSelectAll={true}
+              selectAllText="همه" // ← Custom text
+              deselectAllText="لغو همه" // ← Custom text
+              label="کشور"
+              options={[
+                { value: "ir", label: "ایران" },
+                { value: "de", label: "آلمان" },
+                { value: "it", label: "ایتالیا" },
+                { value: "gh", label: "غنا" },
+                { value: "kr", label: "کره جنوبی" },
+              ]}
+              value={selectedCounties}
+              onChange={setSelectedCountires}
+            />
             <Select
               multiple={true}
               showSelectAll={true}

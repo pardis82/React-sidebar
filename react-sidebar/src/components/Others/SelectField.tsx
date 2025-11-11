@@ -37,6 +37,7 @@ type SelectProps = {
   selectAllText?: string;
   deselectAllText?: string;
   searchable?: boolean;
+  maxDisplaynum?: number;
 } & (SingleSelectProps | MultipleSelectProps);
 
 export default function Select(props: SelectProps) {
@@ -51,6 +52,7 @@ export default function Select(props: SelectProps) {
     selectAllText = "Select All",
     deselectAllText = "Deselect All",
     searchable = false,
+    maxDisplaynum = 3,
   } = props;
   const [query, setQuery] = useState("");
   const generatedId = useId();
@@ -62,12 +64,21 @@ export default function Select(props: SelectProps) {
   const getButtonText = () => {
     if (multiple) {
       const selectedValues = props.value as OptionProps[];
+
       if (selectedValues.length === 0) return "انتخاب کنید";
       if (selectedValues.length === 1) return selectedValues[0].label;
+
+      // Show item labels when within the display limit
+      if (selectedValues.length <= maxDisplaynum) {
+        return selectedValues.map((item) => item.label).join("، ");
+      }
+
+      // Show count when more than maxDisplayItems
       return `${selectedValues.length} آیتم انتخاب شد`;
     }
+
     const selectedValue = props.value as OptionProps | undefined;
-    return selectedValue?.label ?? "انتخاب شد";
+    return selectedValue?.label ?? "انتخاب کنید";
   };
 
   const areAllSelected = () => {
@@ -136,7 +147,7 @@ export default function Select(props: SelectProps) {
             <label
               htmlFor={generatedId}
               className={clsx(
-                "absolute px-1 right-2 -top-2 text-xs font-sans transition-colors",
+                "absolute px-1 right-2 -top-[0.65rem] text-xs font-sans transition-colors",
                 erroMessage
                   ? "text-red-500"
                   : isFocused || isOpen // ✅ keep purple when open
