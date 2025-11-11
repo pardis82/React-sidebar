@@ -1,0 +1,50 @@
+@font-face {
+    font-family: "YekanBakh";
+    /* یک نام دلخواه برای فونت خود انتخاب کنید */
+    src: url("./assets/fonts/YekanBakh-Regular.woff2") format("woff2");
+    font-weight: normal;
+    /* یا 400 */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "YekanBakh";
+    src: url("./assets/fonts/YekanBakh-Bold.woff2") format("woff2");
+    font-weight: bold;
+    /* یا 700 */
+    font-style: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sidebar-body {
+    scrollbar-width: thin;
+    /* (رنگ دستگیره) (رنگ پس‌زمینه) */
+    scrollbar-color: #6b7280;
+}
+
+.sidebar-body::-webkit-scrollbar {
+    width: 8px;
+    /* می‌تونید کمترش کنید، مثلا 6px */
+}
+
+.sidebar-body::-webkit-scrollbar-track {
+    background: #1f2937;
+    /* رنگ پس‌زمینه سایدبار شما (کمی تیره‌تر) */
+    border-radius: 10px;
+}
+
+.sidebar-body::-webkit-scrollbar-thumb {
+    background-color: #f2f2f2;
+    /* یک رنگ خاکستری خنثی */
+    border-radius: 10px;
+    border: 2px solid #1f2937;
+    /* ایجاد یک حاشیه همرنگ پس‌زمینه برای زیبایی */
+}
+
+.sidebar-body::-webkit-scrollbar-thumb:hover {
+    background-color: #9ca3af;
+    /* کمی روشن‌تر در حالت هاور */
+}
